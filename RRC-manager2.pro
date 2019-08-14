@@ -29,17 +29,21 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     testwidget.cpp \
-    serialmonitor.cpp
+    serialmonitor.cpp \
+    serialsettingsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     testwidget.h \
-    serialmonitor.h
+    serialmonitor.h \
+    serialsettingsdialog.h
 
 FORMS += \
         mainwindow.ui \
     testwidget.ui \
-    serialmonitor.ui
+    serialmonitor.ui \
+    serialsettingsdialog.ui \
+    serialsettingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
