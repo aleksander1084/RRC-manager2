@@ -30,13 +30,25 @@ SOURCES += \
         mainwindow.cpp \
     testwidget.cpp \
     serialmonitor.cpp \
-    serialsettingsdialog.cpp
+    serialsettingsdialog.cpp \
+    myserial.cpp \
+    rrccommunication.cpp \
+    parameter.cpp \
+    rrcmodule.cpp \
+    rrcmoduleflasher.cpp \
+    parameterlist.cpp
 
 HEADERS += \
         mainwindow.h \
     testwidget.h \
     serialmonitor.h \
-    serialsettingsdialog.h
+    serialsettingsdialog.h \
+    myserial.h \
+    rrccommunication.h \
+    parameter.h \
+    parameterlist.h \
+    rrcmodule.h \
+    rrcmoduleflasher.h
 
 FORMS += \
         mainwindow.ui \

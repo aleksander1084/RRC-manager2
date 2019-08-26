@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSerialPort>
+#include "myserial.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -19,27 +20,11 @@ class SerialSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    struct Settings {
-        QString name;
-        qint32 baudRate;
-        QString stringBaudRate;
-        QSerialPort::DataBits dataBits;
-        QString stringDataBits;
-        QSerialPort::Parity parity;
-        QString stringParity;
-        QSerialPort::StopBits stopBits;
-        QString stringStopBits;
-        QSerialPort::FlowControl flowControl;
-        QString stringFlowControl;
-        bool localEchoEnabled;
-        int idx;
-    };
-
     explicit SerialSettingsDialog(QWidget *parent = nullptr);
     ~SerialSettingsDialog();
 
-    Settings currentSettings;
-    Settings settings() const;
+    mySerial *currentSettings;
+    //mySerial settings() const;
     void externalSerialIndexChange(int idx);
 
 signals:
@@ -48,8 +33,6 @@ signals:
 private slots:
     void showPortInfo(int idx);
     void apply();
-    void checkCustomBaudRatePolicy(int idx);
-    void checkCustomDevicePathPolicy(int idx);
 
 private:
     void fillPortsParameters();
