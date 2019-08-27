@@ -6,9 +6,27 @@
 
 class RRCModuleFlasher : public RRCModule
 {
+    Q_OBJECT
 public:
     RRCModuleFlasher();
-    ~RRCModuleFlasher(){};
+    ~RRCModuleFlasher();
+
+protected:
+    Parameter<bool, 1>      *mmode;
+    Parameter<float, 1>     *mflashingPeriod;
+    Parameter<uint16_t, 1>  *mtimeout;
+    Parameter<uint16_t, 1>  *mmasterTimeout;
+    Parameter<uint8_t, 1>   *mgateDelay;
+    Parameter<uint8_t, 1>   *mactiveInputs;
+    Parameter<uint8_t, 1>   *mactivationInputs;
+    Parameter<uint8_t, 1>   *mdeactivationInputs;
+    Parameter<uint8_t, 1>   *mmaintainInputs;
+
+    //advenced settings
+    Parameter<uint8_t, 1>   *mactiveInputsState;
+    Parameter<uint8_t, 6>   *minputActivationDelay;
+    Parameter<uint8_t, 6>   *minputDeactivationDelay;
+
 };
 
 #endif // RRCMODULEFLASHER_H

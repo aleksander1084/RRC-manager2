@@ -36,7 +36,8 @@ SOURCES += \
     parameter.cpp \
     rrcmodule.cpp \
     rrcmoduleflasher.cpp \
-    parameterlist.cpp
+    parameterlist.cpp \
+    moduleflasherwindow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,14 +49,16 @@ HEADERS += \
     parameter.h \
     parameterlist.h \
     rrcmodule.h \
-    rrcmoduleflasher.h
+    rrcmoduleflasher.h \
+    moduleflasherwindow.h
 
 FORMS += \
         mainwindow.ui \
     testwidget.ui \
     serialmonitor.ui \
     serialsettingsdialog.ui \
-    serialsettingsdialog.ui
+    serialsettingsdialog.ui \
+    moduleflasherwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

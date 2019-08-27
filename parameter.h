@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstddef>
 #include "parameterlist.h"
+#include <QDebug>
 
 template<typename valType = int, int numOfVal = 1>class Parameter : public ParameterList
 {
@@ -13,15 +14,19 @@ public:
 
     }
     Parameter(QString n_name, QString n_symbol, valType n_values[], int valSize)
-        : name(n_name), symbol(n_symbol)
     {
+        name = n_name;
+        symbol = n_symbol;
+        qDebug() << name;
         for(int i = 0; i < valSize; i++)
         {
-            values[i] = n_values[i];
+            values.push_back(n_values[i]);
+            //qDebug() << values[i];
         }
         for(int i = valSize; i < numOfVal; i++)
         {
-            values[i] = defaultValues[i];
+            values.push_back(defaultValues[i]);
+            //qDebug() << values[i];
         }
 
     }
@@ -30,10 +35,31 @@ public:
     {
 
     }
-    void setParameter(QString n_name, QString n_symbol, valType n_values[])
+    void setParameter(QString n_name, QString n_symbol, valType n_values[], int valSize)
     {
-
+        name = n_name;
+        symbol = n_symbol;
+        for(int i = 0; i < valSize; i++)
+        {
+            values[i] = n_values[i];
+        }
+        for(int i = valSize; i < numOfVal; i++)
+        {
+            values[i] = defaultValues[i];
+        }
     }
+
+//    void setParameterValue(valType n_values[], int valSize)
+//    {
+//        for(int i = 0; i < valSize; i++)
+//        {
+//            values[i] = n_values[i];
+//        }
+//        for(int i = valSize; i < numOfVal; i++)
+//        {
+//            values[i] = defaultValues[i];
+//        }
+//    }
 
     bool operator==( const Parameter &q )
     {
@@ -51,10 +77,9 @@ public:
     {
 
     }
-    QString name;
-    QString symbol;
-    std::array<valType, numOfVal> values;
-    std::array<valType, numOfVal> defaultValues;
+
+    std::vector<valType> values;
+    std::vector<valType> defaultValues;
 //    valType values[numOfVal];
 //    valType defaultValues[numOfVal];
 private:

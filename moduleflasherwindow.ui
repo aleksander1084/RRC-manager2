@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ModuleFlasherWindow</class>
+ <widget class="QMainWindow" name="ModuleFlasherWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Flasher Module Configuration</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton_AdvencedSettings">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>470</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Advenced Settings</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_updateModuleDataBase">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>510</y>
+      <width>171</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update Module and Data Base</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_updateModule">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>510</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update Module</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_flasherModuleHeader">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>40</y>
+      <width>210</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Flasher Module</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frameImage">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>171</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_SN">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>310</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>SN.: AA/BB/XX/YY/ZZZZ</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_SFN">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>340</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>SFN.: X.Y.Z</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_lastUpdate">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>370</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Last update: 01.01.2019</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_settingMatch">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>400</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Setting the same as in a Data Base</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_flashPeriod">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>112</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_flashingPeriod">
+    <property name="geometry">
+     <rect>
+      <x>467</x>
+      <y>111</y>
+      <width>92</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Flashing Period [s]:</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider_flashingPeriod">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>140</y>
+      <width>130</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider_timeDeactivation">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>188</y>
+      <width>130</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>120</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_timeDeactivation">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>159</y>
+      <width>123</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Time for deactivation [s]:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_timeDeactivation">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>160</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_maxTime">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>202</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_maxTime">
+    <property name="geometry">
+     <rect>
+      <x>445</x>
+      <y>201</y>
+      <width>123</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Max. activation time [s]:</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider_maxTime">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>230</y>
+      <width>130</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>100</number>
+    </property>
+    <property name="maximum">
+     <number>3600</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_loadModule">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>510</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load from module</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_loadDatabase">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>510</y>
+      <width>121</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load from Data Base</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>250</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_mode">
+       <property name="text">
+        <string>Mode:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_automatic">
+       <property name="text">
+        <string>Automatic</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_mode</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_manual">
+       <property name="text">
+        <string>Manual</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_mode</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>441</x>
+      <y>280</y>
+      <width>275</width>
+      <height>129</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_InputMode">
+       <property name="text">
+        <string>Input mode:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_activation">
+       <property name="text">
+        <string>Activation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_deactivation">
+       <property name="text">
+        <string>Deactivation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_maintain">
+       <property name="text">
+        <string>Maintain</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_unactive">
+       <property name="text">
+        <string>Unactive</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_i1">
+       <property name="text">
+        <string>Input 1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QRadioButton" name="radioButton_i1a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i1</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QRadioButton" name="radioButton_i1d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i1</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QRadioButton" name="radioButton_i1m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i1</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QRadioButton" name="radioButton_i1n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i1</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_i2">
+       <property name="text">
+        <string>Input 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QRadioButton" name="radioButton_i2a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i2</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QRadioButton" name="radioButton_i2d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i2</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QRadioButton" name="radioButton_i2m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i2</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="QRadioButton" name="radioButton_i2n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i2</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_i3">
+       <property name="text">
+        <string>Input 3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QRadioButton" name="radioButton_i3a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i3</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QRadioButton" name="radioButton_i3d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i3</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QRadioButton" name="radioButton_i3m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i3</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="4">
+      <widget class="QRadioButton" name="radioButton_i3n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i3</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_i4">
+       <property name="text">
+        <string>Input 4</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QRadioButton" name="radioButton_i4a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i4</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QRadioButton" name="radioButton_i4d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i4</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QRadioButton" name="radioButton_i4m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i4</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QRadioButton" name="radioButton_i4n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i4</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_i5">
+       <property name="text">
+        <string>Input 5</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QRadioButton" name="radioButton_i5a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i5</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QRadioButton" name="radioButton_i5d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i5</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QRadioButton" name="radioButton_i5m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i5</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QRadioButton" name="radioButton_i5n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i5</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_i6">
+       <property name="text">
+        <string>Input 6</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QRadioButton" name="radioButton_i6a">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i6</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QRadioButton" name="radioButton_i6d">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i6</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="QRadioButton" name="radioButton_i6m">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i6</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="6" column="4">
+      <widget class="QRadioButton" name="radioButton_i6n">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_i6</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup_mode"/>
+  <buttongroup name="buttonGroup_i1"/>
+  <buttongroup name="buttonGroup_i2"/>
+  <buttongroup name="buttonGroup_i3"/>
+  <buttongroup name="buttonGroup_i4"/>
+  <buttongroup name="buttonGroup_i5"/>
+  <buttongroup name="buttonGroup_i6">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
+</ui>
