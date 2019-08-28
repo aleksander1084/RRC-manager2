@@ -39,8 +39,9 @@ SerialSettingsDialog::~SerialSettingsDialog()
 
 void SerialSettingsDialog::externalSerialIndexChange(int idx)
 {
-ui->serialPortInfoListBox_2->setCurrentIndex(idx);
-
+    fillPortsInfo();
+    //updateSettings();
+    ui->serialPortInfoListBox_2->setCurrentIndex(idx);
 }
 
 void SerialSettingsDialog::showPortInfo(int idx)
@@ -61,7 +62,8 @@ void SerialSettingsDialog::apply()
 {
     updateSettings();
     emit serialIndexChanged(ui->serialPortInfoListBox_2->currentIndex());
-    //emit currentSettings.settingsChangedSignal(currentSettings);
+    emit currentSettings->settingsChangedSignal();
+    qDebug() << "Serial setting name: " << currentSettings->name;
     hide();
 }
 
@@ -126,7 +128,8 @@ void SerialSettingsDialog::fillPortsInfo()
 
 void SerialSettingsDialog::updateSettings()
 {
-    currentSettings->name = ui->serialPortInfoListBox_2->currentText();
+    qDebug() << "update settings";
+    currentSettings->setName(ui->serialPortInfoListBox_2->currentText());
 
         currentSettings->baudRate = static_cast<QSerialPort::BaudRate>(
                     ui->baudRateBox_2->itemData(ui->baudRateBox_2->currentIndex()).toInt());

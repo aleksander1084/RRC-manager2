@@ -39,6 +39,11 @@ class SerialMonitor : public QWidget
 
 public:
     /**
+     * @brief currentSetting returns current serial port settings
+     * @return currentSettings for SerialSettingsDialog->mySerial object
+     */
+    mySerial *currentSetting();
+    /**
      * @brief SerialMonitor class constructor
      * @param parent pointer to the object that called new part of the interface
      */
@@ -99,16 +104,13 @@ private slots:
 
 private:
 
-   // void sendMessageToSerialPort(QString message);//mySerial.h
     /**
      * @brief sendCommandLineToSerialPort method responsible for sending content of
      * line input to over serial port
      */
     void sendCommandLineToSerialPort();
     Ui::SerialMonitor *ui = nullptr; /**< pointer to the graphic interface of the class */
-    //QLabel *serialStatus = nullptr;
     SerialSettingsDialog *serialSettings = nullptr; /**< pointer to the window with serial port settings*/
-    //QSerialPort *serial = nullptr;
 };
 
 #endif // SERIALMONITOR_H

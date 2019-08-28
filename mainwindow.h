@@ -5,6 +5,8 @@
 #include "testwidget.h"
 #include "serialmonitor.h"
 #include <QMenu>
+#include "myserial.h"
+#include "moduleselectdock.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,10 +24,14 @@ private:
     Ui::MainWindow *ui;
     TestWidget *testWidget;
     SerialMonitor *serialMonitor;
+    ModuleSelectDock *mselectDock;
     QMenu *viewMenu;
+    mySerial *serial;
 
     void topMenu();
     void setDocks();
+    void returnSerialName();
+    QMenu *createPopupMenu();
 };
 
 #endif // MAINWINDOW_H

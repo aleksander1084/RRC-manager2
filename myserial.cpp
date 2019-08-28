@@ -133,3 +133,10 @@ void mySerial::sendMessageToSerialPort(QString message)
         emit newMessageSent(message);
     }
 }
+
+void mySerial::setName(QString n_name)
+{
+    name = n_name;
+    emit nameChangedSignal();
+    qDebug() << "name changedSignal emited " << name;
+}

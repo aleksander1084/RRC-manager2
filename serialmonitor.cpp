@@ -3,6 +3,11 @@
 
 #include <QMessageBox>
 
+mySerial *SerialMonitor::currentSetting()
+{
+    return serialSettings->currentSettings;
+}
+
 SerialMonitor::SerialMonitor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SerialMonitor),
@@ -11,12 +16,10 @@ SerialMonitor::SerialMonitor(QWidget *parent) :
     ui->setupUi(this);
     qDebug() << "Searching for Serial Ports";
     listAvaliablePorts();
-    //this->serialPort = new QSerialPort(this);
 
     connect(ui->pushButtonSettings, &QPushButton::clicked, serialSettings, &SerialSettingsDialog::show);
     connect(serialSettings, &SerialSettingsDialog::serialIndexChanged, ui->comboBoxPorts, &QComboBox::setCurrentIndex);
     serialPortConnectedInterfaceLockout(false);
-
 }
 
 SerialMonitor::~SerialMonitor()
@@ -32,7 +35,7 @@ void SerialMonitor::on_pushButtonSearch_clicked()
     listAvaliablePorts();
 }
 
-void SerialMonitor::listAvaliablePorts()//universal equivalent in mySerial class, TODO update
+void SerialMonitor::listAvaliablePorts()
 {
     QList<QSerialPortInfo> devices;
     devices = QSerialPortInfo::availablePorts();
@@ -67,25 +70,11 @@ void SerialMonitor::AddToLogs(QString message, QString direction)
 
 }
 
-//void SerialMonitor::sendMessageToSerialPort(QString message)
-//{
-//    if(this->serialPort->isOpen() && this->serialPort->isWritable())
-//    {
-//        this->AddToLogs(message, ">>");
-//        this->serialPort->write(message.toStdString().c_str());
-//    }
-//    else {
-//        this->AddToLogs("Can't send a message.\n Port is closed or can't recive data.","<>");
-//    }
-//}
-
 void SerialMonitor::sendCommandLineToSerialPort()
 {
      QString message = ui->lineEditCommandLine->text();
      ui->lineEditCommandLine->clear();
      this->serialSettings->currentSettings->sendMessageToSerialPort(message);
-     //this->sendMessageToSerialPort(message);
-
 }
 
 void SerialMonitor::on_pushButtonConnect_clicked()
@@ -95,33 +84,6 @@ void SerialMonitor::on_pushButtonConnect_clicked()
       this->AddToLogs("No device found.","<>");
       return;
     }
-//    mySerial port = serialSettings->settings();
-//    this->serialPort->setPortName(port.name);
-//    qDebug() << "connecting to the port";
-//    qDebug() << port.name;
-
-//    // Open and set serial port:
-//    if(!serialPort->isOpen()){
-//        if(serialPort->open(QSerialPort::ReadWrite)) {
-//          this->serialPort->setBaudRate(port.baudRate);
-//            qDebug() << port.baudRate;
-//          this->serialPort->setDataBits(port.dataBits);
-//          this->serialPort->setParity(port.parity);
-//          this->serialPort->setStopBits(port.stopBits);
-//          this->serialPort->setFlowControl(port.flowControl);
-
-//          this->AddToLogs("Serial port is open", "<>");
-//           connect(this->serialPort, SIGNAL(readyRead()), this, SLOT(readFromSerialPort()));
-
-//           serialPortConnectedInterfaceLockout(true);
-//        } else {
-//          this->AddToLogs("Failed to open serial port","<>");
-//        }
-//    }
-//    else {
-//        this->AddToLogs("Serial port already open.", "<>");
-//        qDebug() << "Serial port already open";
-//    }
     QString message = serialSettings->currentSettings->connectSerialPort();
     qDebug() << message;
     if(serialSettings->currentSettings->isOpen())
@@ -133,21 +95,10 @@ void SerialMonitor::on_pushButtonConnect_clicked()
                      this, &SerialMonitor::readFromSerialPort);
     QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageSent,
                      this, &SerialMonitor::AddToLogs);
-
-
 }
 
 void SerialMonitor::on_pushButtonDisconnect_clicked()
 {
-//    if(this->serialPort->isOpen()){
-//        this->serialPort->close();
-//        this->AddToLogs("Serial port closed", "<>");
-//        qDebug() << "Serial port closed";
-//    }
-//    else{
-//        this->AddToLogs("Serial port not open, can not be closed.", "<>");
-//        qDebug() << "Serial port not open, can not be closed.";
-//    }
     QString message = serialSettings->currentSettings->disconnectSerialPort();
     qDebug() << message;
     if(!serialSettings->currentSettings->isOpen())
@@ -155,15 +106,10 @@ void SerialMonitor::on_pushButtonDisconnect_clicked()
       serialPortConnectedInterfaceLockout(false);
     }
     AddToLogs(message, "<>");
-
-
 }
 
 void SerialMonitor::readFromSerialPort(QString message)
 {
-//    const QByteArray data = this->serialPort->readAll();
-
-//    QString line = QString::fromStdString(data.toStdString());
     qDebug()<< message;
     this->AddToLogs(message, "<<");
 }
@@ -185,10 +131,14 @@ void SerialMonitor::on_pushButtonClearLog_clicked()
 
 void SerialMonitor::on_comboBoxPorts_currentIndexChanged(int index)
 {
-    serialSettings->externalSerialIndexChange(index);
+
     QString portName = ui->comboBoxPorts->currentText().split(" ").first();
-    serialSettings->currentSettings->name = portName;
-    //qDebug() << serialSettings->currentSettings.name;
+    qDebug() << "serial monitor";
+    serialSettings->currentSettings->setName(portName);
+    //qDebug() << "serial monitor name: " << serialSettings->currentSettings->name;
+    serialSettings->externalSerialIndexChange(index);
+
+    emit serialSettings->currentSettings->settingsChangedSignal();
 }
 
 void SerialMonitor::on_pushButtonSettings_clicked()

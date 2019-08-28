@@ -91,6 +91,7 @@ public:
      */
     void sendMessageToSerialPort(QString message);
 
+    void setName(QString n_name);
     /**
      * @brief operator = assigment operator for mySerial that is inhariting after QObject that
      * doesn't include assigment in this case overload has to copy member values into another variable
@@ -110,6 +111,7 @@ public:
 
 
 signals:
+    void nameChangedSignal();
 
     /**
      * @brief settingsChangedSignal function called when Serial Port Settings are changed and there

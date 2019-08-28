@@ -2,16 +2,22 @@
 #include "ui_moduleflasherwindow.h"
 //#include "ui_modulelidaraswindow.h"
 //#include "moduleflasheraswindow.h"
+#include "QDebug"
 
-ModuleFlasherWindow::ModuleFlasherWindow(QWidget *parent) :
+ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::ModuleFlasherWindow)
+    ui(new Ui::ModuleFlasherWindow),
+    serial(n_serial)
 {
     ui->setupUi(this);
     SetInputModesDisabled();
     SetInputModesEnabled();
    // QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
     //QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
+
+    fillSerialPorts();
+
+    connect(serial, &mySerial::nameChangedSignal, this, &ModuleFlasherWindow::fillSerialPorts);
 
 }
 
@@ -114,6 +120,22 @@ void ModuleFlasherWindow::SetInputModesEnabled(){
     QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->label_i5, &QLabel::setEnabled);
     QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->label_i6, &QLabel::setEnabled);
 
+}
+
+void ModuleFlasherWindow::fillSerialPorts()
+{
+    qDebug() << "Flasher serial port name:" << serial->name;
+    QList<QSerialPortInfo> devices;
+    devices = QSerialPortInfo::availablePorts();
+    ui->comboBoxSerialPorts->clear();
+    for(int i = 0; i < devices.count(); i++)
+    {
+        ui->comboBoxSerialPorts->addItem(devices.at(i).portName() + " " + devices.at(i).description());
+        if(serial->name == devices.at(i).portName())
+        {
+            ui->comboBoxSerialPorts->setCurrentIndex(i);
+        }
+    }
 }
 
 

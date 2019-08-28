@@ -2,6 +2,7 @@
 #define MODULEFLASHERWINDOW_H
 
 #include <QMainWindow>
+#include "myserial.h"
 
 namespace Ui {
 class ModuleFlasherWindow;
@@ -12,7 +13,7 @@ class ModuleFlasherWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ModuleFlasherWindow(QWidget *parent = nullptr);
+    explicit ModuleFlasherWindow(mySerial *n_serial, QWidget *parent = nullptr);
     ~ModuleFlasherWindow();
 
 private slots:
@@ -30,11 +31,14 @@ private slots:
     void on_lineEdit_maxTime_textEdited(const QString &arg1);
 
     void on_pushButton_AdvencedSettings_clicked();
+
+    void fillSerialPorts();
     
 private:
     Ui::ModuleFlasherWindow *ui;
     void SetInputModesDisabled();
     void SetInputModesEnabled();
+    mySerial *serial;
 };
 
 #endif // MODULEFLASHERWINDOW_H

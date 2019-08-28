@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>40</y>
+      <y>50</y>
       <width>210</width>
       <height>61</height>
      </rect>
@@ -77,7 +77,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>50</y>
       <width>171</width>
       <height>251</height>
      </rect>
@@ -310,7 +310,7 @@
      <string>Load from Data Base</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>510</x>
@@ -352,7 +352,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>441</x>
@@ -807,6 +807,55 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayoutSerialPort" columnstretch="2,8,3,3,3,0">
+     <property name="horizontalSpacing">
+      <number>1</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>5</number>
+     </property>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="pushButtonConnect">
+       <property name="text">
+        <string>Connect</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButtonSearch">
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelSerialPort">
+       <property name="text">
+        <string>Serial port:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBoxSerialPorts"/>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="pushButtonDisconnect">
+       <property name="text">
+        <string>Disconnect</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -823,16 +872,16 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_mode"/>
+  <buttongroup name="buttonGroup_i5"/>
+  <buttongroup name="buttonGroup_i4"/>
   <buttongroup name="buttonGroup_i1"/>
   <buttongroup name="buttonGroup_i2"/>
   <buttongroup name="buttonGroup_i3"/>
-  <buttongroup name="buttonGroup_i4"/>
-  <buttongroup name="buttonGroup_i5"/>
   <buttongroup name="buttonGroup_i6">
    <property name="exclusive">
     <bool>true</bool>
    </property>
   </buttongroup>
+  <buttongroup name="buttonGroup_mode"/>
  </buttongroups>
 </ui>
