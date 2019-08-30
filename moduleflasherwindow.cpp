@@ -12,13 +12,13 @@ ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, QWidget *parent) :
     ui->setupUi(this);
     SetInputModesDisabled();
     SetInputModesEnabled();
-   // QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
-    //QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
+    QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
+    QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
 
     fillSerialPorts();
 
     connect(serial, &mySerial::nameChangedSignal, this, &ModuleFlasherWindow::fillSerialPorts);
-
+    serialPortConnectedInterfaceLockout(serial->isOpen());
 }
 
 ModuleFlasherWindow::~ModuleFlasherWindow()
@@ -120,6 +120,14 @@ void ModuleFlasherWindow::SetInputModesEnabled(){
     QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->label_i5, &QLabel::setEnabled);
     QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->label_i6, &QLabel::setEnabled);
 
+}
+
+void ModuleFlasherWindow::serialPortConnectedInterfaceLockout(bool status)
+{
+    ui->pushButtonSearch->setEnabled(!status);
+    ui->pushButtonConnect->setEnabled(!status);
+    ui->comboBoxSerialPorts->setEnabled(!status);
+    ui->pushButtonDisconnect->setEnabled(status);
 }
 
 void ModuleFlasherWindow::fillSerialPorts()

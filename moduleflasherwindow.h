@@ -36,9 +36,10 @@ private slots:
     
 private:
     Ui::ModuleFlasherWindow *ui;
+    mySerial *serial;
     void SetInputModesDisabled();
     void SetInputModesEnabled();
-    mySerial *serial;
+    void serialPortConnectedInterfaceLockout(bool status);
 };
 
 #endif // MODULEFLASHERWINDOW_H

@@ -43,7 +43,8 @@ public:
         return errorOcured;
     }
 
-    template<typename typVal>
+    template<typename typVal>//TODO: add default values constructor
+                             //TODO: change n_val from typVal arrayo to std::vector<typVal> that can be nitialized like {1,2,3}
     void setParameterValue(QString n_symbol, typVal n_val[], int n_valSize){
         for (std::vector<ParameterList*>::iterator it = paramneterList.begin(); it != paramneterList.end(); ++it)
         {
