@@ -20,7 +20,8 @@ public:
     void softwareVersion(QString n_softwareVersion);
     QString lastUpdate();
     void lastUpdate(int day, int month, int year);
-    bool checkDeviceAuthenticity();
+    QString authenticity();
+    bool checkDeviceAuthenticity();//TODO
 
     template<typename typVal>
     std::vector<typVal> readParameter(QString n_symbol)
@@ -43,13 +44,13 @@ public:
         return errorOcured;
     }
 
-    template<typename typVal>//TODO: add default values constructor
-                             //TODO: change n_val from typVal arrayo to std::vector<typVal> that can be nitialized like {1,2,3}
-    void setParameterValue(QString n_symbol, typVal n_val[], int n_valSize){
+    template<typename typVal>
+    void setParameterValue(QString n_symbol, std::vector<typVal> n_val){
         for (std::vector<ParameterList*>::iterator it = paramneterList.begin(); it != paramneterList.end(); ++it)
         {
             if((*it)->mySymbol() == n_symbol)
             {
+                int n_valSize = n_val->size();
                 for (int i = 0; i < n_valSize; ++i)
                 {
                     ((Parameter<typVal>*)((*it)))->values[i] = n_val[i];

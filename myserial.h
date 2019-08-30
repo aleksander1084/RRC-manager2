@@ -90,7 +90,7 @@ public:
      * @param message contains message that has to be send
      */
     void sendMessageToSerialPort(QString message);
-
+    //TODO: doxygen
     void setName(QString n_name);
     /**
      * @brief operator = assigment operator for mySerial that is inhariting after QObject that
@@ -106,11 +106,14 @@ public:
     QSerialPort::Parity parity; /**< contains type of the parity for the serial port */
     QSerialPort::StopBits stopBits; /**< contains number of stoop bits for the serial port communication */
     QSerialPort::FlowControl flowControl; /**< contains type of the flow control for the communication */
-    //bool localEchoEnabled;
+    //bool localEchoEnabled; //TODO remove local echo here and in settings window
 
 
 
 signals:
+    //TODO: Doxygen
+    void serialConnectionStuatusSignal(bool status);
+    //TODO: Doxygen
     void nameChangedSignal();
 
     /**

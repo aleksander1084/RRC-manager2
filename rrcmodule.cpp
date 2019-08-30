@@ -2,18 +2,13 @@
 
 RRCModule::RRCModule()
 {
-    uint8_t sn[] = {0,0,0,0,0};
-    mserialNumber =     new Parameter<uint8_t, 5>   ("Serial number", "SN", sn, sizeof (sn)/sizeof (sn[0]));
-    msoftwareVersion =  new Parameter<uint8_t, 5>   ("Software version", "SV", sn, sizeof (sn)/sizeof (sn[0]));
-    uint8_t lu[] = {0,0,0};
-    mlastUpdate =       new Parameter<uint8_t, 3>   ("Last update", "LU", lu, sizeof (lu)/sizeof (lu[0]));
-    bool auth[] = {false};
-    mauthenticity =     new Parameter<bool, 1>      ("Authenticity", "AU", auth, sizeof (auth)/sizeof (auth[0]));
-    uint8_t rsid[] = {1};
-    mRS485ID =          new Parameter<uint8_t, 1>   ("RS485 identifier", "RS4", rsid, sizeof (rsid)/sizeof (rsid[0]));
-    mchipIDSig =        new Parameter<uint8_t, 3>   ("Chip signature", "CHID", lu, sizeof (lu)/sizeof (lu[0]));
-    uint8_t chipSN[] = {0,0,0,0,0,0,0,0,0};
-    mchipIDSN =         new Parameter<uint8_t, 9>   ("Chip serial number", "CHSN", chipSN, sizeof (chipSN)/sizeof (chipSN[0]));
+    mserialNumber =     new Parameter<uint8_t, 5>   ("Serial number", "SN", {0,0,0,0,0}, {0,0,0,0,0});
+    msoftwareVersion =  new Parameter<uint8_t, 5>   ("Software version", "SV", {0,0,0,0,0}, {0,0,0,0,0});
+    mlastUpdate =       new Parameter<uint8_t, 3>   ("Last update", "LU", {1,1,0}, {1,1,0});
+    mauthenticity =     new Parameter<bool, 1>      ("Authenticity", "AU", {false}, {false});
+    mRS485ID =          new Parameter<uint8_t, 1>   ("RS485 identifier", "RS4", {1}, {1});
+    mchipIDSig =        new Parameter<uint8_t, 3>   ("Chip signature", "CHID", {0,0,0}, {0,0,0});
+    mchipIDSN =         new Parameter<uint8_t, 9>   ("Chip serial number", "CHSN", {0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0});
 
     paramneterList.push_back(mserialNumber);
     paramneterList.push_back(msoftwareVersion);
@@ -33,7 +28,95 @@ RRCModule::~RRCModule()
     delete mRS485ID;
     delete mchipIDSig;
     delete mchipIDSN;
-    std::for_each(paramneterList.begin(), paramneterList.end(), [](ParameterList* param){delete param;});
+    //std::for_each(paramneterList.begin(), paramneterList.end(), [](ParameterList* param){delete param;});
 
+}
+
+QString RRCModule::serialNumber()
+{
+    QString mySerialNumber;
+    for (int i = 0; i < int(mserialNumber->values.size()); ++i)
+    {
+        mySerialNumber += QString::number(int(mserialNumber->values[i]));
+        if(i < int(mserialNumber->values.size()) - 1)
+        {
+            mySerialNumber += "/";
+        }
+    }
+    return mySerialNumber;
+}
+
+void RRCModule::serialNumber(QString n_serialNumber)
+{
+    QStringList sections = n_serialNumber.split("/");
+    for (int i = 0; i < sections.length(); ++i)
+    {
+        mserialNumber->values[i] = uint8_t(sections.value(i).toInt());
+    }
+}
+
+QString RRCModule::softwareVersion()
+{
+    QString mySoftwareVersion;
+    for (int i = 0; i < int(msoftwareVersion->values.size()); ++i)
+    {
+        mySoftwareVersion += QString::number(int(msoftwareVersion->values[i]));
+        if(i < int(msoftwareVersion->values.size()) - 1)
+        {
+            mySoftwareVersion += "/";
+        }
+    }
+    return mySoftwareVersion;
+}
+
+void RRCModule::softwareVersion(QString n_softwareVersion)
+{
+    QStringList sections = n_softwareVersion.split("/");
+    for (int i = 0; i < sections.length(); ++i)
+    {
+        msoftwareVersion->values[i] = uint8_t(sections.value(i).toInt());
+    }
+}
+
+QString RRCModule::lastUpdate()
+{
+    QString myLastUpdate;
+    for(int i = 0; i < int(mlastUpdate->values.size()); ++i)
+    {
+        if(i < int(mlastUpdate->values.size()) - 1)
+        {
+            QString section = QString::number(int(mlastUpdate->values[i]));
+            myLastUpdate += QString::fromStdString(std::string(2 - section.length(), '0'));
+            myLastUpdate += section;
+            myLastUpdate += ".";
+        }
+        else
+        {
+            myLastUpdate += "2";
+            QString year = QString::number(int(mlastUpdate->values[i]));
+            myLastUpdate += QString::fromStdString(std::string(3 - year.length(), '0'));
+            myLastUpdate += year;
+        }
+    }
+    return myLastUpdate;
+}
+
+void RRCModule::lastUpdate(int day, int month, int year)
+{
+    mlastUpdate->values[0] = uint8_t(day);
+    mlastUpdate->values[1] = uint8_t(month);
+    mlastUpdate->values[2] = uint8_t(year % 2000);
+}
+
+QString RRCModule::authenticity()
+{
+    if(mauthenticity->values[mauthenticity->values.size() -1])
+    {
+        return "Module is authentic.";
+    }
+    else
+    {
+        return "Module authenticity test failed";
+    }
 }
 

@@ -84,6 +84,7 @@ QString mySerial::connectSerialPort()
             //qDebug() << flowControl;
 
            QObject::connect(serialPort, &QSerialPort::readyRead, this, &mySerial::readFromSerialPort);
+           emit serialConnectionStuatusSignal(true);
 
 
         } else {
@@ -98,6 +99,7 @@ QString mySerial::disconnectSerialPort()
     if(serialPort->isOpen())
     {
         serialPort->close();
+        emit serialConnectionStuatusSignal(false);
     }
     if(!serialPort->isOpen())
     {

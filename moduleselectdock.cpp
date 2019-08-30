@@ -22,6 +22,6 @@ void ModuleSelectDock::on_pushButtonFlasher_clicked()
     {
         delete mWindow;
     }
-    mWindow = new ModuleFlasherWindow(serial);
+    mWindow = new ModuleFlasherWindow(serial, this);
     mWindow->show();
 }

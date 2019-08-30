@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 #include "myserial.h"
+#include "rrcmoduleflasher.h"
+#include <QLabel>
+#include <QButtonGroup>
+#include <QLineEdit>
+
+//TODO: Doxygen
 
 namespace Ui {
 class ModuleFlasherWindow;
@@ -33,13 +39,39 @@ private slots:
     void on_pushButton_AdvencedSettings_clicked();
 
     void fillSerialPorts();
+
+    void serialPortConnectedInterfaceLockout(bool status);
+
+    void checkAllInputs();
     
+    void on_pushButtonSearch_clicked();
+
+    void on_pushButtonConnect_clicked();
+
+    void on_pushButtonDisconnect_clicked();
+
 private:
     Ui::ModuleFlasherWindow *ui;
     mySerial *serial;
+    RRCModuleFlasher *mflasher;
+    QButtonGroup *inputs[6];
     void SetInputModesDisabled();
     void SetInputModesEnabled();
-    void serialPortConnectedInterfaceLockout(bool status);
+    void dispalyModuleValues();
+    void displayDefaultValyues();
+    void setLabel(QString tag, QString text, QLabel *label);
+    void readInputMode(int inputNumber);
+    void groupRadioButtons();
+    bool setMode();
+    void setLineEditAndSlider(QLineEdit *lineEdit, double n_value);
+    void setLineEditAndSlider(QLineEdit *lineEdit, float n_value);
+    void setLineEditAndSlider(QLineEdit *lineEdit, int n_value);
+    void setLineEditAndSlider(QLineEdit *lineEdit, uint8_t n_value);
+    void setLineEditAndSlider(QLineEdit *lineEdit, uint16_t n_value);
+
+
+
+
 };
 
 #endif // MODULEFLASHERWINDOW_H

@@ -3,27 +3,36 @@
 //#include "ui_modulelidaraswindow.h"
 //#include "moduleflasheraswindow.h"
 #include "QDebug"
+#include <math.h>
+
 
 ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ModuleFlasherWindow),
     serial(n_serial)
 {
+    mflasher = new RRCModuleFlasher;
     ui->setupUi(this);
     SetInputModesDisabled();
     SetInputModesEnabled();
-    QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
-    QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
+    QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, this, &ModuleFlasherWindow::checkAllInputs);
+    groupRadioButtons();
+//    QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
+//    QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
 
     fillSerialPorts();
-
+    qDebug()<<"starting widnow";
     connect(serial, &mySerial::nameChangedSignal, this, &ModuleFlasherWindow::fillSerialPorts);
     serialPortConnectedInterfaceLockout(serial->isOpen());
+    connect(serial, &mySerial::serialConnectionStuatusSignal, this, &ModuleFlasherWindow::serialPortConnectedInterfaceLockout);
+
+    dispalyModuleValues();
 }
 
 ModuleFlasherWindow::~ModuleFlasherWindow()
 {
     delete ui;
+    delete mflasher;
 }
 
 void ModuleFlasherWindow::SetInputModesDisabled(){
@@ -122,12 +131,143 @@ void ModuleFlasherWindow::SetInputModesEnabled(){
 
 }
 
+void ModuleFlasherWindow::dispalyModuleValues()
+{
+//    QString sn = "SN: ";
+//            sn += mflasher->serialNumber();
+//            qDebug() << sn;
+//    ui->label_SN->setText(sn);
+//    ui->label_SN->repaint();
+    setLabel("SN: ", mflasher->serialNumber(), ui->label_SN);
+    setLabel("SV: ", mflasher->softwareVersion(), ui->label_SFN);
+    setLabel("Last update: ", mflasher->lastUpdate(), ui->label_lastUpdate);
+
+    if(mflasher->authenticity() != "Module is authentic.")
+    {
+        ui->label_authenticity->setStyleSheet("QLabel { color : red; }");
+    }
+    else
+    {
+        ui->label_authenticity->setStyleSheet("QLabel { color : black; }");
+    }
+    setLabel("", mflasher->authenticity(), ui->label_authenticity);
+
+    ui->label_settingMatch->hide(); //TODO: check with database
+
+    setMode();
+
+    setLineEditAndSlider(ui->lineEdit_flashPeriod, mflasher->flashingPeriod());
+    setLineEditAndSlider(ui->lineEdit_timeDeactivation, mflasher->timeout());
+    setLineEditAndSlider(ui->lineEdit_maxTime, mflasher->masterTimeout());
+}
+
+void ModuleFlasherWindow::setLabel(QString tag, QString text, QLabel *label)
+{
+    label->setText(tag + text);
+    label->repaint();
+}
+
+void ModuleFlasherWindow::readInputMode(int inputNumber)
+{
+    inputs[inputNumber]->button(mflasher->inputMode(inputNumber))->setChecked(true);
+}
+
+void ModuleFlasherWindow::groupRadioButtons()
+{
+    inputs[0] = ui->buttonGroup_i1;
+    inputs[1] = ui->buttonGroup_i2;
+    inputs[2] = ui->buttonGroup_i3;
+    inputs[3] = ui->buttonGroup_i4;
+    inputs[4] = ui->buttonGroup_i5;
+    inputs[5] = ui->buttonGroup_i6;
+
+    inputs[0]->setId(ui->radioButton_i1n, 0);
+    inputs[0]->setId(ui->radioButton_i1a, 1);
+    inputs[0]->setId(ui->radioButton_i1d, 2);
+    inputs[0]->setId(ui->radioButton_i1m, 3);
+
+    inputs[1]->setId(ui->radioButton_i2n, 0);
+    inputs[1]->setId(ui->radioButton_i2a, 1);
+    inputs[1]->setId(ui->radioButton_i2d, 2);
+    inputs[1]->setId(ui->radioButton_i2m, 3);
+
+    inputs[2]->setId(ui->radioButton_i3n, 0);
+    inputs[2]->setId(ui->radioButton_i3a, 1);
+    inputs[2]->setId(ui->radioButton_i3d, 2);
+    inputs[2]->setId(ui->radioButton_i3m, 3);
+
+    inputs[3]->setId(ui->radioButton_i4n, 0);
+    inputs[3]->setId(ui->radioButton_i4a, 1);
+    inputs[3]->setId(ui->radioButton_i4d, 2);
+    inputs[3]->setId(ui->radioButton_i4m, 3);
+
+    inputs[4]->setId(ui->radioButton_i5n, 0);
+    inputs[4]->setId(ui->radioButton_i5a, 1);
+    inputs[4]->setId(ui->radioButton_i5d, 2);
+    inputs[4]->setId(ui->radioButton_i5m, 3);
+
+    inputs[5]->setId(ui->radioButton_i6n, 0);
+    inputs[5]->setId(ui->radioButton_i6a, 1);
+    inputs[5]->setId(ui->radioButton_i6d, 2);
+    inputs[5]->setId(ui->radioButton_i6m, 3);
+}
+
+bool ModuleFlasherWindow::setMode()
+{
+    if(mflasher->mode())
+    {
+        ui->radioButton_automatic->setChecked(true);
+        emit ui->radioButton_automatic->clicked(true);
+    }
+    else
+    {
+        ui->radioButton_manual->setChecked(true);
+        emit ui->radioButton_manual->clicked(true);
+    }
+
+    return mflasher->mode();
+}
+
+void ModuleFlasherWindow::setLineEditAndSlider(QLineEdit *lineEdit, double n_value)
+{
+    lineEdit->setText(QString::number(n_value));
+    emit lineEdit->textEdited(lineEdit->text());
+}
+
+void ModuleFlasherWindow::setLineEditAndSlider(QLineEdit *lineEdit, float n_value)
+{
+    setLineEditAndSlider(lineEdit, double(n_value));
+}
+
+void ModuleFlasherWindow::setLineEditAndSlider(QLineEdit *lineEdit, int n_value)
+{
+    setLineEditAndSlider(lineEdit, double(n_value));
+}
+
+void ModuleFlasherWindow::setLineEditAndSlider(QLineEdit *lineEdit, uint8_t n_value)
+{
+    setLineEditAndSlider(lineEdit, double(n_value));
+}
+
+void ModuleFlasherWindow::setLineEditAndSlider(QLineEdit *lineEdit, uint16_t n_value)
+{
+    setLineEditAndSlider(lineEdit, double(n_value));
+}
+
 void ModuleFlasherWindow::serialPortConnectedInterfaceLockout(bool status)
 {
     ui->pushButtonSearch->setEnabled(!status);
     ui->pushButtonConnect->setEnabled(!status);
     ui->comboBoxSerialPorts->setEnabled(!status);
     ui->pushButtonDisconnect->setEnabled(status);
+}
+
+void ModuleFlasherWindow::checkAllInputs()
+{
+    for(int i = 0; i < 6; ++i)
+    {
+        readInputMode(i);
+    }
 }
 
 void ModuleFlasherWindow::fillSerialPorts()
@@ -184,4 +324,25 @@ void ModuleFlasherWindow::on_pushButton_AdvencedSettings_clicked()
 //    ModuleFlasherASWindow advancedSettings;
 //    advancedSettings.setModal(true);
 //    advancedSettings.exec();
+}
+
+void ModuleFlasherWindow::on_pushButtonSearch_clicked()
+{
+    fillSerialPorts();
+    //TODO: add signal to refresch list of port in other windows
+}
+
+void ModuleFlasherWindow::on_pushButtonConnect_clicked()
+{
+    if(ui->comboBoxSerialPorts->count() == 0)
+    {
+        return;
+    }
+
+    serial->connectSerialPort(); //TODO: return it to the terminal window?
+}
+
+void ModuleFlasherWindow::on_pushButtonDisconnect_clicked()
+{
+    serial->disconnectSerialPort();
 }

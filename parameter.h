@@ -13,11 +13,31 @@ public:
     {
 
     }
-    Parameter(QString n_name, QString n_symbol, valType n_values[], int valSize)
+    Parameter(QString n_name, QString n_symbol, std::vector<valType> n_values, std::vector<valType> n_defaultValues)
     {
         name = n_name;
         symbol = n_symbol;
-        qDebug() << name;
+        //qDebug() << name;
+        int valSize = n_values.size();
+        for(int i = 0; i < valSize; i++)
+        {
+            values.push_back(n_values[i]);
+            defaultValues.push_back(n_defaultValues[i]);
+            //qDebug() << values[i];
+        }
+        for(int i = valSize; i < numOfVal; i++)
+        {
+            values.push_back(defaultValues[i]);
+            //qDebug() << values[i];
+        }
+
+    }
+    Parameter(QString n_name, QString n_symbol, std::vector<valType> n_values)
+    {
+        name = n_name;
+        symbol = n_symbol;
+        //qDebug() << name;
+        int valSize = n_values.size();
         for(int i = 0; i < valSize; i++)
         {
             values.push_back(n_values[i]);

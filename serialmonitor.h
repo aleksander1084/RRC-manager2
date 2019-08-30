@@ -55,12 +55,7 @@ public:
      */
     void listAvaliablePorts();
 
-    /**
-     * @brief serialPortConnectedInterfaceLockout method enalbes/disables part of the interface depending on
-     * the fact is serial ort connected or not
-     * @param status value to set
-     */
-    void serialPortConnectedInterfaceLockout(bool status);
+
 
     /**
      * @brief externalSerialIndexChanger method called when index of the serial port in a combo box will be changed
@@ -101,6 +96,13 @@ private slots:
      * @param direction of transmission
      */
     void AddToLogs(QString message, QString direction = ">>");
+
+    /**
+     * @brief serialPortConnectedInterfaceLockout method enalbes/disables part of the interface depending on
+     * the fact is serial ort connected or not
+     * @param status value to set
+     */
+    void serialPortConnectedInterfaceLockout(bool status);
 
 private:
 
