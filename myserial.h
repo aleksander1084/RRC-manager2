@@ -115,6 +115,8 @@ signals:
     void serialConnectionStuatusSignal(bool status);
     //TODO: Doxygen
     void nameChangedSignal();
+    //TODO: Doxygen
+    void searchSignal();
 
     /**
      * @brief settingsChangedSignal function called when Serial Port Settings are changed and there

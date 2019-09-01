@@ -17,10 +17,15 @@ SerialMonitor::SerialMonitor(QWidget *parent) :
     qDebug() << "Searching for Serial Ports";
     listAvaliablePorts();
 
-    connect(ui->pushButtonSettings, &QPushButton::clicked, serialSettings, &SerialSettingsDialog::show);
-    connect(serialSettings, &SerialSettingsDialog::serialIndexChanged, ui->comboBoxPorts, &QComboBox::setCurrentIndex);
+    QObject::connect(ui->pushButtonSettings, &QPushButton::clicked, serialSettings, &SerialSettingsDialog::show);
+    QObject::connect(serialSettings, &SerialSettingsDialog::serialIndexChanged, ui->comboBoxPorts, &QComboBox::setCurrentIndex);
     serialPortConnectedInterfaceLockout(false);
-    connect(serialSettings->currentSettings, &mySerial::serialConnectionStuatusSignal, this, &SerialMonitor::serialPortConnectedInterfaceLockout);
+    QObject::connect(serialSettings->currentSettings, &mySerial::serialConnectionStuatusSignal, this, &SerialMonitor::serialPortConnectedInterfaceLockout);
+    QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageReceived,
+                     this, &SerialMonitor::readFromSerialPort);
+    QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageSent,
+                     this, &SerialMonitor::AddToLogs);
+    QObject::connect(serialSettings->currentSettings, &mySerial::searchSignal, this, &SerialMonitor::listAvaliablePorts);
 }
 
 SerialMonitor::~SerialMonitor()
@@ -33,8 +38,8 @@ void SerialMonitor::on_pushButtonSearch_clicked()
 {
     qDebug() << "Searching for Serial Ports";
     this->AddToLogs("Searching for Serial Ports", "<>");
-    listAvaliablePorts();
-    //TODO: add signal to refresch list of port in other windows
+    //listAvaliablePorts();
+    emit serialSettings->currentSettings->searchSignal();
 }
 
 void SerialMonitor::listAvaliablePorts()
@@ -92,11 +97,7 @@ void SerialMonitor::on_pushButtonConnect_clicked()
 //    {
 //        serialPortConnectedInterfaceLockout(true);
 //    }
-    AddToLogs(message, "<>");
-    QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageReceived,
-                     this, &SerialMonitor::readFromSerialPort);
-    QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageSent,
-                     this, &SerialMonitor::AddToLogs);
+   // AddToLogs(message, "<>");
 }
 
 void SerialMonitor::on_pushButtonDisconnect_clicked()
@@ -107,13 +108,13 @@ void SerialMonitor::on_pushButtonDisconnect_clicked()
 //    {
 //      serialPortConnectedInterfaceLockout(false);
 //    }
-    AddToLogs(message, "<>");
+    //AddToLogs(message, "<>");
 }
 
 void SerialMonitor::readFromSerialPort(QString message)
 {
-    qDebug()<< message;
-    this->AddToLogs(message, "<<");
+    //qDebug()<< message;
+    this->AddToLogs(message, ">>");
 }
 
 void SerialMonitor::on_pushButtonSendCommand_clicked()

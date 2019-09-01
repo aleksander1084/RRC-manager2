@@ -120,3 +120,15 @@ QString RRCModule::authenticity()
     }
 }
 
+void RRCModule::receiveParameterFromSerial(QStringList parameterSections)
+{
+    for (unsigned long long i = 0; i < paramneterList.size(); ++i)
+    {
+        if(parameterSections.at(0) == paramneterList[i]->mySymbol())
+        {
+
+
+        }
+    }
+}
+

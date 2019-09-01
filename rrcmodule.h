@@ -61,6 +61,9 @@ public:
         }
     }
 
+private slots:
+    void receiveParameterFromSerial(QStringList parameterSections);
+
 protected:
     Parameter<uint8_t, 5> *mserialNumber;
     Parameter<uint8_t, 5> *msoftwareVersion;

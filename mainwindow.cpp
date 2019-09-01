@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete communication;
 }
 
 void MainWindow::topMenu()
@@ -69,6 +70,7 @@ void MainWindow::setDocks()
     addDockWidget(Qt::BottomDockWidgetArea, dock2);
     viewMenu->addAction(dock2->toggleViewAction());
     serial = serialMonitor->currentSetting();
+    communication = new RRCCommunication(serial);
 
     QDockWidget *dock3 = new QDockWidget("&Module select", this);
     dock3->setAllowedAreas(Qt::RightDockWidgetArea);
@@ -81,12 +83,12 @@ void MainWindow::setDocks()
     //dock3->setContextMenuPolicy(Qt::PreventContextMenu);
 
     QMainWindow::splitDockWidget(dock3, dock, Qt::Vertical);
-    qDebug() << "features " << dock3->features();
+    //qDebug() << "features " << dock3->features();
 }
 
 void MainWindow::returnSerialName()
 {
-    qDebug() << serial->name;
+    //qDebug() << serial->name;
 }
 
 #ifndef QT_NO_MENU

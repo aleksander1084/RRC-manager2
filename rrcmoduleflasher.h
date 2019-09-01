@@ -22,6 +22,15 @@ public:
     uint16_t masterTimeout();
     void masterTimeout(uint16_t n_value);
 
+    uint8_t gateDelay();
+    void gateDelay(uint8_t n_value);
+    bool activeInputState(int input);
+    void activeInputState(int input, bool n_value);
+    uint8_t inputActivationDelay(int input);
+    void inputActivationDelay(int input, uint8_t n_value);
+    uint8_t inputDeactivationDelay(int input);
+    void inputDeactivationDelay(int input, uint8_t n_value);
+
 
 
 

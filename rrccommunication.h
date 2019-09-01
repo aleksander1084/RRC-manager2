@@ -3,31 +3,45 @@
 #include "myserial.h"
 #include "parameter.h"
 #include "parameterlist.h"
+#include "rrcmodule.h"
+#include <QObject>
 
-class RRCCommunication
+class RRCCommunication : public QObject
 {
+    Q_OBJECT
 public:
-//    struct Parameter{
-//      QString name;
-//      QString symbol;
-//      int values[3];
-//    };
+
+
+    union unionForHexFloatConversion
+    {
+        unsigned long ul;
+        float f;
+    };
+
+    RRCCommunication(mySerial *n_serialPort, RRCModule *n_module);
     RRCCommunication(mySerial *n_serialPort);
     ~RRCCommunication();
 
 
     QString formatMessageToSendRequest(ParameterList *parameter);
     QString formatMessageToSendUpdate(ParameterList *parameter);
-    //void readParametersList();
     //bool checkDeviceAuthenticity();
     void writeNewDevice();
 
-//signals:
-//    Parameter receivedNewParametr(QString message);
+signals:
+    void receivedNewParametr(QStringList parameterSections);
 
 private:
     mySerial *serialPort;
-    int deviceID;
+    RRCModule *mmodule;
+
+    QStringList decodeBool(QStringList sections);
+    QStringList decodeuint(QStringList sections);
+    QStringList decodeFloat(QStringList sections);
+
+
+private slots:
+    void processNewMessage(QString message);
 
 
 };

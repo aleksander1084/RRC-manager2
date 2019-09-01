@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QButtonGroup>
 #include <QLineEdit>
+#include "moduleflasherwindowsettings.h"
 
 //TODO: Doxygen
 
@@ -50,8 +51,11 @@ private slots:
 
     void on_pushButtonDisconnect_clicked();
 
+    void on_pushButton_updateModule_clicked();
+
 private:
     Ui::ModuleFlasherWindow *ui;
+    ModuleFlasherWindowSettings *advancedSettings;
     mySerial *serial;
     RRCModuleFlasher *mflasher;
     QButtonGroup *inputs[6];
@@ -68,6 +72,7 @@ private:
     void setLineEditAndSlider(QLineEdit *lineEdit, int n_value);
     void setLineEditAndSlider(QLineEdit *lineEdit, uint8_t n_value);
     void setLineEditAndSlider(QLineEdit *lineEdit, uint16_t n_value);
+    void updateModuleSettings();
 
 
 

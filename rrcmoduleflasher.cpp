@@ -123,7 +123,8 @@ float RRCModuleFlasher::flashingPeriod()
 
 void RRCModuleFlasher::flashingPeriod(float n_value)
 {
-    mflashingPeriod->values[0] = float(int(n_value*10)/10);
+
+    mflashingPeriod->values[0] = float(int(n_value*10)/10.0);
 }
 
 uint16_t RRCModuleFlasher::timeout()
@@ -144,6 +145,53 @@ uint16_t RRCModuleFlasher::masterTimeout()
 void RRCModuleFlasher::masterTimeout(uint16_t n_value)
 {
     mmasterTimeout->values[0] = n_value;
+}
+
+uint8_t RRCModuleFlasher::gateDelay()
+{
+    return mgateDelay->values[0];
+}
+
+void RRCModuleFlasher::gateDelay(uint8_t n_value)
+{
+    mgateDelay->values[0] = n_value;
+}
+
+bool RRCModuleFlasher::activeInputState(int input)
+{
+    return bool((mactiveInputsState->values[0] >> input) & 1UL);
+}
+
+void RRCModuleFlasher::activeInputState(int input, bool n_value)
+{
+    if(n_value)
+    {
+        mactiveInputsState->values[0] |= 1UL << input;
+    }
+    else
+    {
+        mactiveInputsState->values[0] &= ~(1UL << input);
+    }
+}
+
+uint8_t RRCModuleFlasher::inputActivationDelay(int input)
+{
+    return minputActivationDelay->values[unsigned(input)];
+}
+
+void RRCModuleFlasher::inputActivationDelay(int input, uint8_t n_value)
+{
+    minputActivationDelay->values[unsigned(input)] = n_value;
+}
+
+uint8_t RRCModuleFlasher::inputDeactivationDelay(int input)
+{
+    return minputDeactivationDelay->values[unsigned(input)];
+}
+
+void RRCModuleFlasher::inputDeactivationDelay(int input, uint8_t n_value)
+{
+    minputDeactivationDelay->values[unsigned(input)] = n_value;
 }
 
 

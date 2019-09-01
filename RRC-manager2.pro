@@ -38,7 +38,8 @@ SOURCES += \
     rrcmoduleflasher.cpp \
     parameterlist.cpp \
     moduleflasherwindow.cpp \
-    moduleselectdock.cpp
+    moduleselectdock.cpp \
+    moduleflasherwindowsettings.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -52,7 +53,8 @@ HEADERS += \
     rrcmodule.h \
     rrcmoduleflasher.h \
     moduleflasherwindow.h \
-    moduleselectdock.h
+    moduleselectdock.h \
+    moduleflasherwindowsettings.h
 
 FORMS += \
         mainwindow.ui \
@@ -61,7 +63,8 @@ FORMS += \
     serialsettingsdialog.ui \
     serialsettingsdialog.ui \
     moduleflasherwindow.ui \
-    moduleselectdock.ui
+    moduleselectdock.ui \
+    moduleflasherwindowsettings.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

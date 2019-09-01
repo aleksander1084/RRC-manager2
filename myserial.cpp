@@ -66,6 +66,7 @@ mySerial::~mySerial()
 
 QString mySerial::connectSerialPort()
 {
+    QString message = nullptr;
     serialPort->setPortName(name);
     qDebug() << "Connecting to " + serialPort->portName();
     if(!serialPort->isOpen())
@@ -85,17 +86,20 @@ QString mySerial::connectSerialPort()
 
            QObject::connect(serialPort, &QSerialPort::readyRead, this, &mySerial::readFromSerialPort);
            emit serialConnectionStuatusSignal(true);
+           message = "Connected to the serial port: " + serialPort->portName();
 
-
-        } else {
-          return "Failed to open. Port is already open.";
         }
     }
-    return "Connected to the serial port: " + serialPort->portName();
+    else {
+          message =  "Failed to open. Port is already open.";
+        }
+    emit newMessageSent(message, "<>");
+    return "\n";
 }
 
 QString mySerial::disconnectSerialPort()
 {
+    QString message;
     if(serialPort->isOpen())
     {
         serialPort->close();
@@ -103,12 +107,15 @@ QString mySerial::disconnectSerialPort()
     }
     if(!serialPort->isOpen())
     {
-        return "Serial port " + serialPort->portName() + " is closed.";
-    }
+        message = "Serial port " + serialPort->portName() + " is closed.";
+     }
     else
     {
-        return "Failed to close serial port " + serialPort->portName();
+        message = "Failed to close serial port " + serialPort->portName();
     }
+
+    emit newMessageSent(message, "<>");
+    return "\n";
 }
 
 bool mySerial::isOpen()
@@ -124,6 +131,7 @@ void mySerial::readFromSerialPort()
         const QByteArray data = this->serialPort->readAll();
 
         line = QString::fromStdString(data.toStdString());
+        //qDebug() << "emituje sygnal";
         emit newMessageReceived(line);
 }
 

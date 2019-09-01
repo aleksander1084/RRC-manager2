@@ -11,6 +11,7 @@
 #include <QSerialPortInfo>
 #include "serialsettingsdialog.h"
 #include "myserial.h"
+#include "rrccommunication.h"
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -49,11 +50,8 @@ public:
      */
     explicit SerialMonitor(QWidget *parent = nullptr);
 
-    /**
-     * @brief listAvaliablePorts method fills QComboBox::comboBoxPorts with a list
-     * of the avaliable serial ports
-     */
-    void listAvaliablePorts();
+
+
 
 
 
@@ -68,6 +66,12 @@ public:
     ~SerialMonitor();
 
 private slots:
+    /**
+     * @brief listAvaliablePorts method fills QComboBox::comboBoxPorts with a list
+     * of the avaliable serial ports
+     */
+    void listAvaliablePorts();
+
     void on_pushButtonSearch_clicked();
 
     void on_pushButtonConnect_clicked();

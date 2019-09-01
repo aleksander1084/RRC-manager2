@@ -7,6 +7,7 @@
 #include <QMenu>
 #include "myserial.h"
 #include "moduleselectdock.h"
+#include "rrccommunication.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,7 @@ private:
     ModuleSelectDock *mselectDock;
     QMenu *viewMenu;
     mySerial *serial;
+    RRCCommunication *communication;
 
     void topMenu();
     void setDocks();
