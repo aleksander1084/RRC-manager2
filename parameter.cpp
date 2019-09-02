@@ -35,4 +35,10 @@
 //    delete defaultValues;
 //}
 
+//template<>
+//bool Parameter<bool>::isBool()
+//{
+//    return true;
+//}
+
 

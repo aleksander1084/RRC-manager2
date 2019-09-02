@@ -35,17 +35,29 @@ RRCModuleFlasher::RRCModuleFlasher()
 RRCModuleFlasher::~RRCModuleFlasher()
 {
     delete mmode;
+    mmode = nullptr;
     delete mflashingPeriod;
+    mflashingPeriod = nullptr;
     delete mtimeout;
+    mtimeout = nullptr;
     delete mmasterTimeout;
+    mmasterTimeout = nullptr;
     delete mgateDelay;
+    mgateDelay = nullptr;
     delete mactiveInputs;
+    mactiveInputs  = nullptr;
     delete mactivationInputs;
+    mactivationInputs = nullptr;
     delete mdeactivationInputs;
+    mdeactivationInputs = nullptr;
     delete mmaintainInputs;
+    mmaintainInputs = nullptr;
     delete mactiveInputsState;
+    mactiveInputsState = nullptr;
     delete minputActivationDelay;
+    minputActivationDelay = nullptr;
     delete minputDeactivationDelay;
+    minputDeactivationDelay = nullptr;
 }
 
 int RRCModuleFlasher::inputMode(int input)
@@ -83,26 +95,40 @@ int RRCModuleFlasher::inputMode(int input)
 
 void RRCModuleFlasher::inputMode(int input, int n_mode)// 0 = unactive, 1 = activation, 2 = deactivation, 3 = maintain
 {
+    uint8_t tempActiveInputs = mactiveInputs->values[0];
+    uint8_t tempActivationInputs = mactivationInputs->values[0];
+    uint8_t tempDeactivationInputs = mdeactivationInputs->values[0];
+    uint8_t tempMaintainInputs = mmaintainInputs->values[0];
     switch (n_mode) {
-        case 0: mactiveInputs->values[0] &= ~(1UL << input);
-                mactivationInputs->values[0] &= ~(1UL << input);
-                mdeactivationInputs->values[0] &= ~(1UL << input);
-                mmaintainInputs->values[0] &= ~(1UL << input);
+        case 0: tempActiveInputs &= ~(1UL << input);
+                tempActivationInputs &= ~(1UL << input);
+                tempDeactivationInputs &= ~(1UL << input);
+                tempMaintainInputs &= ~(1UL << input);
                 break;
-        case 1: mactiveInputs->values[0] |= 1UL << input;
-                mactivationInputs->values[0] |= 1UL << input;
-                mdeactivationInputs->values[0] &= ~(1UL << input);
-                mmaintainInputs->values[0] &= ~(1UL << input);
+        case 1: tempActiveInputs |= 1UL << input;
+                tempActivationInputs |= 1UL << input;
+                tempDeactivationInputs &= ~(1UL << input);
+                tempMaintainInputs &= ~(1UL << input);
                 break;
-        case 2: mactiveInputs->values[0] |= 1UL << input;
-                mactivationInputs->values[0] &= ~(1UL << input);
-                mdeactivationInputs->values[0] |= 1UL <<input;
-                mmaintainInputs->values[0] &= ~(1UL << input);
+        case 2: tempActiveInputs |= 1UL << input;
+                tempActivationInputs &= ~(1UL << input);
+                tempDeactivationInputs |= 1UL <<input;
+                tempMaintainInputs &= ~(1UL << input);
                 break;
-        case 3: mactiveInputs->values[0] |= 1UL << input;
-                mactivationInputs->values[0] &= ~(1UL << input);
-                mdeactivationInputs->values[0] &= ~(1UL << input);
-                mmaintainInputs->values[0] |= 1UL << input;
+        case 3: tempActiveInputs |= 1UL << input;
+                tempActivationInputs &= ~(1UL << input);
+                tempDeactivationInputs &= ~(1UL << input);
+                tempMaintainInputs |= 1UL << input;
+    }
+    if(tempActiveInputs != mactiveInputs->values[0]
+            || tempActivationInputs != mactivationInputs->values[0]
+            || tempDeactivationInputs != mdeactivationInputs->values[0]
+            || tempMaintainInputs != mmaintainInputs->values[0])
+    {
+        mactiveInputs->myChanged(true);
+        mactivationInputs->myChanged(true);
+        mdeactivationInputs->myChanged(true);
+        mmaintainInputs->myChanged(true);
     }
 }
 
@@ -113,7 +139,12 @@ bool RRCModuleFlasher::mode()
 
 void RRCModuleFlasher::mode(bool n_mode)
 {
-    mmode->values[0] = n_mode;
+    if( mmode->values[0] != n_mode)
+    {
+        mmode->values[0] = n_mode;
+        mmode->myChanged(true);
+    }
+
 }
 
 float RRCModuleFlasher::flashingPeriod()
@@ -123,8 +154,13 @@ float RRCModuleFlasher::flashingPeriod()
 
 void RRCModuleFlasher::flashingPeriod(float n_value)
 {
+    if(mflashingPeriod->values[0] > float(int(n_value*10)/10.0)
+            || mflashingPeriod->values[0] < float(int(n_value*10)/10.0))
+    {
+        mflashingPeriod->values[0] = float(int(n_value*10)/10.0);
+        mflashingPeriod->myChanged(true);
+    }
 
-    mflashingPeriod->values[0] = float(int(n_value*10)/10.0);
 }
 
 uint16_t RRCModuleFlasher::timeout()
@@ -134,7 +170,11 @@ uint16_t RRCModuleFlasher::timeout()
 
 void RRCModuleFlasher::timeout(uint16_t n_value)
 {
-    mtimeout->values[0] = n_value;
+    if(mtimeout->values[0] != n_value)
+    {
+        mtimeout->values[0] = n_value;
+        mtimeout->myChanged(true);
+    }
 }
 
 uint16_t RRCModuleFlasher::masterTimeout()
@@ -144,7 +184,12 @@ uint16_t RRCModuleFlasher::masterTimeout()
 
 void RRCModuleFlasher::masterTimeout(uint16_t n_value)
 {
-    mmasterTimeout->values[0] = n_value;
+    if(mmasterTimeout->values[0] != n_value)
+    {
+        mmasterTimeout->values[0] = n_value;
+        mmasterTimeout->myChanged(true);
+    }
+
 }
 
 uint8_t RRCModuleFlasher::gateDelay()
@@ -154,7 +199,12 @@ uint8_t RRCModuleFlasher::gateDelay()
 
 void RRCModuleFlasher::gateDelay(uint8_t n_value)
 {
-    mgateDelay->values[0] = n_value;
+    if(mgateDelay->values[0] != n_value)
+    {
+        mgateDelay->values[0] = n_value;
+        mgateDelay->myChanged(true);
+    }
+
 }
 
 bool RRCModuleFlasher::activeInputState(int input)
@@ -164,13 +214,21 @@ bool RRCModuleFlasher::activeInputState(int input)
 
 void RRCModuleFlasher::activeInputState(int input, bool n_value)
 {
+    uint8_t tempActiveInputsState = mactiveInputsState->values[0];
+
     if(n_value)
     {
-        mactiveInputsState->values[0] |= 1UL << input;
+        tempActiveInputsState |= 1UL << input;
     }
     else
     {
-        mactiveInputsState->values[0] &= ~(1UL << input);
+        tempActiveInputsState &= ~(1UL << input);
+    }
+
+    if(tempActiveInputsState != mactiveInputsState->values[0])
+    {
+        mactiveInputsState->values[0] = tempActiveInputsState;
+        mactiveInputsState->myChanged(true);
     }
 }
 
@@ -181,7 +239,12 @@ uint8_t RRCModuleFlasher::inputActivationDelay(int input)
 
 void RRCModuleFlasher::inputActivationDelay(int input, uint8_t n_value)
 {
-    minputActivationDelay->values[unsigned(input)] = n_value;
+    if(minputActivationDelay->values[unsigned(input)] != n_value)
+    {
+        minputActivationDelay->values[unsigned(input)] = n_value;
+        minputActivationDelay->myChanged(true);
+    }
+
 }
 
 uint8_t RRCModuleFlasher::inputDeactivationDelay(int input)
@@ -191,7 +254,12 @@ uint8_t RRCModuleFlasher::inputDeactivationDelay(int input)
 
 void RRCModuleFlasher::inputDeactivationDelay(int input, uint8_t n_value)
 {
-    minputDeactivationDelay->values[unsigned(input)] = n_value;
+    if(minputDeactivationDelay->values[unsigned(input)] != n_value)
+    {
+        minputDeactivationDelay->values[unsigned(input)] = n_value;
+        minputDeactivationDelay->myChanged(true);
+    }
+
 }
 
 

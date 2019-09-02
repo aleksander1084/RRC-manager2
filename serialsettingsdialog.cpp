@@ -30,6 +30,7 @@ SerialSettingsDialog::SerialSettingsDialog(QWidget *parent) :
 SerialSettingsDialog::~SerialSettingsDialog()
 {
     delete ui;
+    ui = nullptr;
 }
 
 //mySerial SerialSettingsDialog::settings() const

@@ -61,7 +61,8 @@ mySerial::mySerial(qint32 n_baudRate)
 
 mySerial::~mySerial()
 {
-    delete serialPort;
+    //delete serialPort;
+    //serialPort = nullptr;
 }
 
 QString mySerial::connectSerialPort()
@@ -131,6 +132,12 @@ void mySerial::readFromSerialPort()
         const QByteArray data = this->serialPort->readAll();
 
         line = QString::fromStdString(data.toStdString());
+
+        if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
+            line = line.left(line.size()-1);
+        if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
+            line = line.left(line.size()-1);
+
         //qDebug() << "emituje sygnal";
         emit newMessageReceived(line);
 }
@@ -139,7 +146,7 @@ void mySerial::sendMessageToSerialPort(QString message)
 {
     if(serialPort->isOpen() && serialPort->isWritable())
     {
-        serialPort->write(message.toStdString().c_str());
+        serialPort->write((message + "\n").toStdString().c_str());
         emit newMessageSent(message);
     }
 }

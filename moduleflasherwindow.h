@@ -8,6 +8,7 @@
 #include <QButtonGroup>
 #include <QLineEdit>
 #include "moduleflasherwindowsettings.h"
+#include "rrccommunication.h"
 
 //TODO: Doxygen
 
@@ -20,7 +21,7 @@ class ModuleFlasherWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ModuleFlasherWindow(mySerial *n_serial, QWidget *parent = nullptr);
+    explicit ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n_communication, QWidget *parent = nullptr);
     ~ModuleFlasherWindow();
 
 private slots:
@@ -53,15 +54,20 @@ private slots:
 
     void on_pushButton_updateModule_clicked();
 
+    void dispalyModuleValues();
+
+    void on_pushButton_loadModule_clicked();
+
 private:
     Ui::ModuleFlasherWindow *ui;
     ModuleFlasherWindowSettings *advancedSettings;
     mySerial *serial;
     RRCModuleFlasher *mflasher;
+    RRCCommunication *mcommunication;
     QButtonGroup *inputs[6];
     void SetInputModesDisabled();
     void SetInputModesEnabled();
-    void dispalyModuleValues();
+
     void displayDefaultValyues();
     void setLabel(QString tag, QString text, QLabel *label);
     void readInputMode(int inputNumber);

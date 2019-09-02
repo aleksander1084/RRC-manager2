@@ -16,10 +16,14 @@ ModuleFlasherWindowSettings::ModuleFlasherWindowSettings(RRCModuleFlasher *flash
 ModuleFlasherWindowSettings::~ModuleFlasherWindowSettings()
 {
     delete ui;
+    ui = nullptr;
     for (int i = 0; i < 6;++i) {
         delete inputActiveState[i];
+        inputActiveState[i] = nullptr;
         delete inputActivationDelay[i];
+        inputActivationDelay[i] = nullptr;
         delete inputDeactivationDelay[i];
+        inputDeactivationDelay[i] = nullptr;
     }
 
 }

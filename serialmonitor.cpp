@@ -31,7 +31,9 @@ SerialMonitor::SerialMonitor(QWidget *parent) :
 SerialMonitor::~SerialMonitor()
 {
     delete ui;
+    ui = nullptr;
     delete serialSettings;
+    serialSettings = nullptr;
 }
 
 void SerialMonitor::on_pushButtonSearch_clicked()

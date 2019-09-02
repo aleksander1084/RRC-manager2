@@ -1,27 +1,28 @@
 #include "moduleflasherwindow.h"
 #include "ui_moduleflasherwindow.h"
-//#include "ui_modulelidaraswindow.h"
-//#include "moduleflasheraswindow.h"
 #include "QDebug"
 #include <math.h>
 
 
-ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, QWidget *parent) :
+ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n_communication, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ModuleFlasherWindow),
     serial(n_serial)
 {
+    mcommunication = n_communication;
     mflasher = new RRCModuleFlasher;
     advancedSettings = new ModuleFlasherWindowSettings(mflasher, this);
-    //NOTE 1.2
+    if(mcommunication->isDeclared){
+        delete mcommunication;
+        mcommunication = nullptr;
+    }
+    mcommunication = new RRCCommunication(serial, mflasher);
     ui->setupUi(this);
     SetInputModesDisabled();
     SetInputModesEnabled();
     QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, this, &ModuleFlasherWindow::checkAllInputs);
     QObject::connect(ui->radioButton_automatic, &QPushButton::toggled, advancedSettings, &ModuleFlasherWindowSettings::setInputMode);
     groupRadioButtons();
-//    QObject::connect(ui->radioButton_manual, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setDisabled);
-//    QObject::connect(ui->radioButton_automatic, &QRadioButton::clicked, ui->radioButton_i1a, &QRadioButton::setEnabled);
 
     fillSerialPorts();
     qDebug()<<"starting widnow";
@@ -30,13 +31,25 @@ ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, QWidget *parent) :
     QObject::connect(serial, &mySerial::serialConnectionStuatusSignal, this, &ModuleFlasherWindow::serialPortConnectedInterfaceLockout);
     QObject::connect(serial, &mySerial::searchSignal, this, &ModuleFlasherWindow::fillSerialPorts);
     dispalyModuleValues();
+    QObject::connect(mflasher, &RRCModule::parameterChanged, this, &ModuleFlasherWindow::dispalyModuleValues);
 
+    mcommunication->readDevice();
 }
 
 ModuleFlasherWindow::~ModuleFlasherWindow()
 {
+    QObject::disconnect(mflasher, &RRCModule::parameterChanged, this, &ModuleFlasherWindow::dispalyModuleValues);
     delete ui;
+    ui = nullptr;
     delete mflasher;
+    mflasher = nullptr;
+    delete advancedSettings;
+    advancedSettings = nullptr;
+    for (int i = 0; i < 6; ++i) {
+        delete inputs[i];
+        inputs[i] = nullptr;
+    }
+    qDebug() << "flasher window killed";
 }
 
 void ModuleFlasherWindow::SetInputModesDisabled(){
@@ -165,6 +178,11 @@ void ModuleFlasherWindow::dispalyModuleValues()
     setLineEditAndSlider(ui->lineEdit_timeDeactivation, mflasher->timeout());
     setLineEditAndSlider(ui->lineEdit_maxTime, mflasher->masterTimeout());
 }
+
+//void ModuleFlasherWindow::reject()
+//{
+//    ModuleFlasherWindow::~ModuleFlasherWindow();
+//}
 
 void ModuleFlasherWindow::setLabel(QString tag, QString text, QLabel *label)
 {
@@ -363,8 +381,6 @@ void ModuleFlasherWindow::on_pushButton_AdvencedSettings_clicked()
 
 void ModuleFlasherWindow::on_pushButtonSearch_clicked()
 {
-    //fillSerialPorts();
-    //TODO: add signal to refresch list of port in other windows
     emit serial->searchSignal();
 }
 
@@ -375,7 +391,7 @@ void ModuleFlasherWindow::on_pushButtonConnect_clicked()
         return;
     }
 
-    serial->connectSerialPort(); //TODO: return it to the terminal window?
+    serial->connectSerialPort();
 }
 
 void ModuleFlasherWindow::on_pushButtonDisconnect_clicked()
@@ -385,7 +401,6 @@ void ModuleFlasherWindow::on_pushButtonDisconnect_clicked()
 
 void ModuleFlasherWindow::on_pushButton_updateModule_clicked()
 {
-    //NOTE 1.2
     updateModuleSettings();
     qDebug() << "MODE:" << mflasher->mode();
     qDebug() << "Flashing period" <<QString::number(double(mflasher->flashingPeriod()), 'f', 1);
@@ -402,4 +417,9 @@ void ModuleFlasherWindow::on_pushButton_updateModule_clicked()
         qDebug() << "input" <<QString::number(i+1) << " deactivation delay: "<<mflasher->inputDeactivationDelay(i);
     }
     dispalyModuleValues();
+}
+
+void ModuleFlasherWindow::on_pushButton_loadModule_clicked()
+{
+    mcommunication->readDevice();
 }

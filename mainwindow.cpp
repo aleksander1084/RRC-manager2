@@ -20,7 +20,21 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete communication;
+    ui = nullptr;
+    delete testWidget;
+    testWidget = nullptr;
+    delete serialMonitor;
+    serialMonitor = nullptr;
+    delete mselectDock;
+    mselectDock = nullptr;
+    delete viewMenu;
+    viewMenu = nullptr;
+    delete serial;
+    serial = nullptr;
+    if(communication->isDeclared){
+        delete communication;
+        communication = nullptr;
+    }
 }
 
 void MainWindow::topMenu()
@@ -74,7 +88,7 @@ void MainWindow::setDocks()
 
     QDockWidget *dock3 = new QDockWidget("&Module select", this);
     dock3->setAllowedAreas(Qt::RightDockWidgetArea);
-    mselectDock = new ModuleSelectDock(serial);
+    mselectDock = new ModuleSelectDock(serial, communication);
     dock3->setWidget(mselectDock);
     addDockWidget(Qt::RightDockWidgetArea, dock3);
     //viewMenu->addAction(dock3->toggleViewAction());

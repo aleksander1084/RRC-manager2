@@ -10,6 +10,7 @@ class RRCCommunication : public QObject
 {
     Q_OBJECT
 public:
+    bool isDeclared;
 
 
     union unionForHexFloatConversion
@@ -22,11 +23,9 @@ public:
     RRCCommunication(mySerial *n_serialPort);
     ~RRCCommunication();
 
-
-    QString formatMessageToSendRequest(ParameterList *parameter);
-    QString formatMessageToSendUpdate(ParameterList *parameter);
-    //bool checkDeviceAuthenticity();
-    void writeNewDevice();
+    void readDevice();//TODO: create
+    void writeNewDevice();//TODO: create
+    void updateDevice();
 
 signals:
     void receivedNewParametr(QStringList parameterSections);
@@ -34,14 +33,19 @@ signals:
 private:
     mySerial *serialPort;
     RRCModule *mmodule;
-
     QStringList decodeBool(QStringList sections);
     QStringList decodeuint(QStringList sections);
     QStringList decodeFloat(QStringList sections);
 
+    QStringList codeBool(QStringList sections);//TODO:create
+    QStringList codeUint(QStringList sections);//TODO:create
+    QStringList codeFloat(QStringList sections);//TODO:create
+    void sendParameterToDevice(QStringList sections);
 
 private slots:
     void processNewMessage(QString message);
+
+
 
 
 };
