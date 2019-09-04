@@ -14,7 +14,7 @@ SerialMonitor::SerialMonitor(QWidget *parent) :
     serialSettings(new SerialSettingsDialog)
 {
     ui->setupUi(this);
-    qDebug() << "Searching for Serial Ports";
+    //qDebug() << "Searching for Serial Ports";
     listAvaliablePorts();
 
     QObject::connect(ui->pushButtonSettings, &QPushButton::clicked, serialSettings, &SerialSettingsDialog::show);
@@ -38,7 +38,7 @@ SerialMonitor::~SerialMonitor()
 
 void SerialMonitor::on_pushButtonSearch_clicked()
 {
-    qDebug() << "Searching for Serial Ports";
+    //qDebug() << "Searching for Serial Ports";
     this->AddToLogs("Searching for Serial Ports", "<>");
     //listAvaliablePorts();
     emit serialSettings->currentSettings->searchSignal();
@@ -51,7 +51,7 @@ void SerialMonitor::listAvaliablePorts()
     ui->comboBoxPorts->clear();
     for(int i = 0; i < devices.count(); i++)
     {
-        qDebug() <<devices.at(i).portName() << devices.at(i).description();
+        //qDebug() <<devices.at(i).portName() << devices.at(i).description();
         this->AddToLogs("Found device: " + devices.at(i).portName() + " " + devices.at(i).description(), "<>");
         ui->comboBoxPorts->addItem(devices.at(i).portName() + " " + devices.at(i).description());
     }
@@ -94,7 +94,7 @@ void SerialMonitor::on_pushButtonConnect_clicked()
       return;
     }
     QString message = serialSettings->currentSettings->connectSerialPort();
-    qDebug() << message;
+    //qDebug() << message;
 //    if(serialSettings->currentSettings->isOpen())
 //    {
 //        serialPortConnectedInterfaceLockout(true);
@@ -105,7 +105,7 @@ void SerialMonitor::on_pushButtonConnect_clicked()
 void SerialMonitor::on_pushButtonDisconnect_clicked()
 {
     QString message = serialSettings->currentSettings->disconnectSerialPort();
-    qDebug() << message;
+    //qDebug() << message;
 //    if(!serialSettings->currentSettings->isOpen())
 //    {
 //      serialPortConnectedInterfaceLockout(false);
@@ -138,7 +138,6 @@ void SerialMonitor::on_comboBoxPorts_currentIndexChanged(int index)
 {
 
     QString portName = ui->comboBoxPorts->currentText().split(" ").first();
-    qDebug() << "serial monitor";
     serialSettings->currentSettings->setName(portName);
     //qDebug() << "serial monitor name: " << serialSettings->currentSettings->name;
     serialSettings->externalSerialIndexChange(index);

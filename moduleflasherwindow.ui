@@ -899,16 +899,16 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_mode"/>
+  <buttongroup name="buttonGroup_i3"/>
   <buttongroup name="buttonGroup_i4"/>
-  <buttongroup name="buttonGroup_i2"/>
   <buttongroup name="buttonGroup_i6">
    <property name="exclusive">
     <bool>true</bool>
    </property>
   </buttongroup>
-  <buttongroup name="buttonGroup_i3"/>
   <buttongroup name="buttonGroup_i5"/>
+  <buttongroup name="buttonGroup_mode"/>
+  <buttongroup name="buttonGroup_i2"/>
   <buttongroup name="buttonGroup_i1"/>
  </buttongroups>
 </ui>

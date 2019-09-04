@@ -64,7 +64,7 @@ void SerialSettingsDialog::apply()
     updateSettings();
     emit currentSettings->serialIndexChanged(ui->serialPortInfoListBox_2->currentIndex());
     emit currentSettings->settingsChangedSignal();
-    qDebug() << "Serial setting name: " << currentSettings->name;
+    //qDebug() << "Serial setting name: " << currentSettings->name;
     hide();
 }
 
@@ -129,7 +129,7 @@ void SerialSettingsDialog::fillPortsInfo()
 
 void SerialSettingsDialog::updateSettings()
 {
-    qDebug() << "update settings";
+    //qDebug() << "update settings";
     currentSettings->setName(ui->serialPortInfoListBox_2->currentText());
 
         currentSettings->baudRate = static_cast<QSerialPort::BaudRate>(

@@ -8,6 +8,7 @@
 #include "myserial.h"
 #include "moduleselectdock.h"
 #include "rrccommunication.h"
+#include "rrcmoduleautodetect.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private:
     QMenu *viewMenu;
     mySerial *serial;
     RRCCommunication *communication;
+    RRCModuleAutoDetect *mautoDetect;
 
     void topMenu();
     void setDocks();

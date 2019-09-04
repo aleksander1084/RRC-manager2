@@ -18,14 +18,26 @@ public:
     explicit ModuleSelectDock(mySerial *n_serial, RRCCommunication *n_communication, QWidget *parent = nullptr);
     ~ModuleSelectDock();
 
+public slots:
+    void checkAutomaticalyDetectedModule();
+
 private slots:
     void on_pushButtonFlasher_clicked();
+    void checkAutomaticalyDetectedModuleSN(QStringList sections);
+    void mWindowWasRejected();
+
+
+
+    void on_pushButtonMW_clicked();
+
+    void on_pushButtonLidar_clicked();
 
 private:
     Ui::ModuleSelectDock *ui;
     mySerial *serial;
     RRCCommunication *communication;
-    QMainWindow *mWindow = nullptr;
+    QDialog *mWindow = nullptr;
+    int automaticConnectionsTries = 0;
 };
 
 #endif // MODULESELECTDOCK_H

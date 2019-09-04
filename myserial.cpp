@@ -69,7 +69,7 @@ QString mySerial::connectSerialPort()
 {
     QString message = nullptr;
     serialPort->setPortName(name);
-    qDebug() << "Connecting to " + serialPort->portName();
+    //qDebug() << "Connecting to " + serialPort->portName();
     if(!serialPort->isOpen())
     {
         if(serialPort->open(QSerialPort::ReadWrite))

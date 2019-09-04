@@ -5,36 +5,17 @@
 #include <QEventLoop>
 #include <QTimer>
 
+void RRCCommunication::checkModuleSN()
+{
+    QString checkSNMessage = "<?|SN>";
+    serialPort->sendMessageToSerialPort(checkSNMessage);
+}
+
 RRCCommunication::RRCCommunication(mySerial *n_serialPort, RRCModule *n_module) : serialPort(n_serialPort), mmodule(n_module)
 {
     QObject::connect(serialPort, &mySerial::newMessageReceived, this, &RRCCommunication::processNewMessage);
     QObject::connect(this, &RRCCommunication::receivedNewParametr, mmodule, &RRCModule::receiveParameterFromSerial);
-    /*Debug() << "inicjalizacja RRCCommunication";
-    qDebug() << "nazwa portu " << serialPort->name;*/
     isDeclared = true;
-
-//    QStringList unsignedInteagers = {QString::number(1),
-//                                     QString::number(2),
-//                                     QString::number(3),
-//                                     QString::number(4),
-//                                     QString::number(5),
-//                                     QString::number(6),
-//                                     QString::number(7),
-//                                     QString::number(10),
-//                                     QString::number(15),
-//                                     QString::number(20),
-//                                     QString::number(255),
-//                                     QString::number(1024)};
-//    qDebug() << "Inteagers:";
-//    codeUint(unsignedInteagers);
-
-//    QStringList bools = {QString::number(int(true)), QString::number(int(false)), QString::number(int(true)), QString::number(int(false))};
-//    qDebug() << "Bools:";
-//    codeBool(bools);
-
-//    QStringList floats = {QString::number(double(1.2)), QString::number(double(1.4)), QString::number(double(1.2)), QString::number(double(1.4))};
-//    qDebug() <<"Floats:";
-//    codeFloat(floats);
 
 }
 
@@ -63,7 +44,7 @@ void RRCCommunication::updateDevice()
     for (unsigned long long i = 0; i < parametersToUpdate.size(); ++i)
     {
         QStringList sections = parametersToUpdate.at(i)->readParameter();
-        qDebug() << sections;
+        //qDebug() << sections;
 
         switch(sections.at(1).toInt())
         {
@@ -80,7 +61,7 @@ void RRCCommunication::updateDevice()
 
         sendParameterToDevice(sections);
         QEventLoop loop;
-        QTimer::singleShot(100, &loop, SLOT(quit()) );
+        QTimer::singleShot(100, &loop, &QEventLoop::quit);
         loop.exec();
     }
 

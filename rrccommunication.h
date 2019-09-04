@@ -11,6 +11,7 @@ class RRCCommunication : public QObject
     Q_OBJECT
 public:
     bool isDeclared;
+    void checkModuleSN();
 
 
     union unionForHexFloatConversion

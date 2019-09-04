@@ -62,11 +62,6 @@ RRCModuleFlasher::~RRCModuleFlasher()
 
 int RRCModuleFlasher::inputMode(int input)
 {
-//    qDebug() << "IN " << input;
-//    qDebug() << "Un " << mactiveInputs->values[mactiveInputs->values.size() - 1] << " " << (mactiveInputs->values[mactiveInputs->values.size() - 1] & input );
-//    qDebug() << "Act " << mdeactivationInputs->values[mactiveInputs->values.size() - 1] << " " << (mactiveInputs->values[mactiveInputs->values.size() - 1] & input );
-//    qDebug() << "Dact " << mdeactivationInputs->values[mactiveInputs->values.size() - 1] << " " << (mdeactivationInputs->values[mactiveInputs->values.size() - 1] & input );
-//    qDebug() << "Main " << mmaintainInputs->values[mactiveInputs->values.size() - 1] << " " << (mmaintainInputs->values[mactiveInputs->values.size() - 1] & input );
     if(((mactiveInputs->values[mactiveInputs->values.size() - 1] >> input) & 1U) == 0)
     {
         //(number >> n) & 1U;
@@ -99,11 +94,11 @@ void RRCModuleFlasher::inputMode(int input, int n_mode)// 0 = unactive, 1 = acti
     uint8_t tempActivationInputs = mactivationInputs->values[0];
     uint8_t tempDeactivationInputs = mdeactivationInputs->values[0];
     uint8_t tempMaintainInputs = mmaintainInputs->values[0];
-    qDebug() << "Input " << QString::number(input);
-    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
-    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
-    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
-    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
+//    qDebug() << "Input " << QString::number(input);
+//    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
+//    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
+//    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
+//    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
     switch (n_mode) {
         case 0: tempActiveInputs &= ~(1UL << input);
                 tempActivationInputs &= ~(1UL << input);
@@ -125,11 +120,11 @@ void RRCModuleFlasher::inputMode(int input, int n_mode)// 0 = unactive, 1 = acti
                 tempDeactivationInputs &= ~(1UL << input);
                 tempMaintainInputs |= 1UL << input;
     }
-    qDebug() << "PO";
-    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
-    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
-    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
-    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
+//    qDebug() << "PO";
+//    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
+//    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
+//    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
+//    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
     if(tempActiveInputs != mactiveInputs->values[0]
             || tempActivationInputs != mactivationInputs->values[0]
             || tempDeactivationInputs != mdeactivationInputs->values[0]

@@ -1,11 +1,11 @@
 #include "moduleflasherwindow.h"
-#include "ui_moduleflasherwindow.h"
+#include "ui_moduleflasherwindow2.h"
 #include "QDebug"
 #include <math.h>
 
 
 ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n_communication, QWidget *parent) :
-    QMainWindow(parent),
+    QDialog(parent),
     ui(new Ui::ModuleFlasherWindow),
     serial(n_serial)
 {
@@ -25,7 +25,7 @@ ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n
     groupRadioButtons();
 
     fillSerialPorts();
-    qDebug()<<"starting widnow";
+    //qDebug()<<"starting widnow";
     QObject::connect(serial, &mySerial::nameChangedSignal, this, &ModuleFlasherWindow::fillSerialPorts);
     serialPortConnectedInterfaceLockout(serial->isOpen());
     QObject::connect(serial, &mySerial::serialConnectionStuatusSignal, this, &ModuleFlasherWindow::serialPortConnectedInterfaceLockout);
@@ -290,7 +290,7 @@ void ModuleFlasherWindow::updateModuleSettings()
     //buttonModes
     for(int i = 0; i < 6 ; ++i)
     {
-        qDebug() << "MODE: " << mflasher->mode();
+        //qDebug() << "MODE: " << mflasher->mode();
         if(mflasher->mode())
         {
             mflasher->inputMode(i, inputs[i]->checkedId());
@@ -299,7 +299,7 @@ void ModuleFlasherWindow::updateModuleSettings()
         {
             mflasher->inputMode(i, 0);
         }
-        qDebug() << "flasher input mode: " << QString::number(mflasher->inputMode(i));
+        //qDebug() << "flasher input mode: " << QString::number(mflasher->inputMode(i));
 
     }
 
@@ -336,7 +336,7 @@ void ModuleFlasherWindow::checkAllInputs()
 
 void ModuleFlasherWindow::fillSerialPorts()
 {
-    qDebug() << "Flasher serial port name:" << serial->name;
+    //qDebug() << "Flasher serial port name:" << serial->name;
     QList<QSerialPortInfo> devices;
     devices = QSerialPortInfo::availablePorts();
     ui->comboBoxSerialPorts->clear();
@@ -402,7 +402,10 @@ void ModuleFlasherWindow::on_pushButtonConnect_clicked()
     {
         return;
     }
+    QString portName = ui->comboBoxSerialPorts->currentText().split(" ").first();
+    serial->setName(portName);
     emit serial->serialIndexChanged(ui->comboBoxSerialPorts->currentIndex());
+    emit serial->settingsChangedSignal();
     serial->connectSerialPort();
 }
 
@@ -414,20 +417,6 @@ void ModuleFlasherWindow::on_pushButtonDisconnect_clicked()
 void ModuleFlasherWindow::on_pushButton_updateModule_clicked()
 {
     updateModuleSettings();
-//    qDebug() << "MODE:" << mflasher->mode();
-//    qDebug() << "Flashing period" <<QString::number(double(mflasher->flashingPeriod()), 'f', 1);
-//    qDebug() << "timeout" << mflasher->timeout();
-//    qDebug() << "master timeout" << mflasher->masterTimeout();
-//    for(int i = 0; i <6; i++)
-//    {
-//        qDebug() << "input" << QString::number(i+1) << " mode: " << QString::number(mflasher->inputMode(i));
-//    }
-//    qDebug() << "LAST UPDATE: " << mflasher->lastUpdate();
-//    for (int i = 0; i<6; ++i) {
-//        qDebug() << "input" <<QString::number(i+1) << " activation state is " << mflasher->activeInputState(i);
-//        qDebug() << "input" <<QString::number(i+1) << " activation delay: "<<mflasher->inputActivationDelay(i);
-//        qDebug() << "input" <<QString::number(i+1) << " deactivation delay: "<<mflasher->inputDeactivationDelay(i);
-//    }
     dispalyModuleValues();
 }
 

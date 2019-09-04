@@ -16,7 +16,7 @@ namespace Ui {
 class ModuleFlasherWindow;
 }
 
-class ModuleFlasherWindow : public QMainWindow
+class ModuleFlasherWindow : public QDialog
 {
     Q_OBJECT
 

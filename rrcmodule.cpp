@@ -171,28 +171,13 @@ std::vector<ParameterList*> RRCModule::listModifiedParameters()
 
 void RRCModule::receiveParameterFromSerial(QStringList parameterSections)
 {
-//    if(parameterSections.at(0) == "SN")
-//    {
-//        QString serialNumberString;
-//        for (int i = 1; i<5;++i)
-//        {
-//           serialNumberString += parameterSections.at(i) + "/";
-//        }
-//        serialNumberString += parameterSections.at(5);
-//        serialNumber(serialNumberString);
-//        return;
-//    }
-//    else if (parameterSections.at(0) == "SV")
-//    {
-
-//    }
-    qDebug() << "receiveParameterFromSerial";
+    //qDebug() << "receiveParameterFromSerial";
     for(unsigned long long i = 0; i < paramneterList.size(); ++i)
     {
         //qDebug() << parameterSections.at(0)
         if(parameterSections.at(0) == paramneterList.at(i)->mySymbol())
         {
-            qDebug() << "receiveParameterFromSerial: found parameter: " << paramneterList.at(i)->myName();
+            //qDebug() << "receiveParameterFromSerial: found parameter: " << paramneterList.at(i)->myName();
             paramneterList.at(i)->setParameter(parameterSections);
         }
     }

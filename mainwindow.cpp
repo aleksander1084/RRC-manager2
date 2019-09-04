@@ -12,9 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     topMenu();
     QTextEdit *myTextEdit = new QTextEdit();
     setCentralWidget(myTextEdit);
+
     setDocks();
 
-
+    mautoDetect = new RRCModuleAutoDetect(serial, this);
+    QObject::connect(mautoDetect, &RRCModuleAutoDetect::moduleAutomaticalyDetected, mselectDock, &ModuleSelectDock::checkAutomaticalyDetectedModule);
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +37,7 @@ MainWindow::~MainWindow()
         delete communication;
         communication = nullptr;
     }
+    delete mautoDetect;
 }
 
 void MainWindow::topMenu()
