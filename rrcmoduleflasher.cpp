@@ -4,7 +4,7 @@
 RRCModuleFlasher::RRCModuleFlasher()
 {
     mmode = new Parameter<bool, 1>("Mode", "MODE", {false}, {true});
-    mflashingPeriod = new Parameter<float, 1>("Flashing period", "FPD", {float(1.2)}, {float(1.2)});
+    mflashingPeriod = new Parameter<uint16_t, 1>("Flashing period", "FPD", {1200}, {1200});
     mtimeout = new Parameter<uint16_t, 1>("Time for deactivation", "TFD", {40}, {40});
     mmasterTimeout = new Parameter<uint16_t, 1>("Maximum activation duration", "MTFD", {1800}, {1800});
     mactiveInputs = new Parameter<uint8_t, 1>("Active inputs", "AIN", {0x7}, {0x0});
@@ -99,6 +99,11 @@ void RRCModuleFlasher::inputMode(int input, int n_mode)// 0 = unactive, 1 = acti
     uint8_t tempActivationInputs = mactivationInputs->values[0];
     uint8_t tempDeactivationInputs = mdeactivationInputs->values[0];
     uint8_t tempMaintainInputs = mmaintainInputs->values[0];
+    qDebug() << "Input " << QString::number(input);
+    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
+    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
+    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
+    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
     switch (n_mode) {
         case 0: tempActiveInputs &= ~(1UL << input);
                 tempActivationInputs &= ~(1UL << input);
@@ -120,11 +125,20 @@ void RRCModuleFlasher::inputMode(int input, int n_mode)// 0 = unactive, 1 = acti
                 tempDeactivationInputs &= ~(1UL << input);
                 tempMaintainInputs |= 1UL << input;
     }
+    qDebug() << "PO";
+    qDebug() << "module active inputs " << QString::number(mactiveInputs->values[0]) << " temp " << QString::number(tempActiveInputs);
+    qDebug() << "module activation inputs " << QString::number(mactivationInputs->values[0]) << " temp " << QString::number(tempActivationInputs);
+    qDebug() << "module deactivation inputs " << QString::number(mdeactivationInputs->values[0]) << " temp " << QString::number(tempDeactivationInputs);
+    qDebug() << "module maintain inputs " << QString::number(mmaintainInputs->values[0]) << " temp " << QString::number(tempMaintainInputs);
     if(tempActiveInputs != mactiveInputs->values[0]
             || tempActivationInputs != mactivationInputs->values[0]
             || tempDeactivationInputs != mdeactivationInputs->values[0]
             || tempMaintainInputs != mmaintainInputs->values[0])
     {
+        mactiveInputs->values[0] = tempActiveInputs;
+        mactivationInputs->values[0] = tempActivationInputs;
+        mdeactivationInputs->values[0] = tempDeactivationInputs;
+        mmaintainInputs->values[0] = tempMaintainInputs;
         mactiveInputs->myChanged(true);
         mactivationInputs->myChanged(true);
         mdeactivationInputs->myChanged(true);
@@ -149,15 +163,16 @@ void RRCModuleFlasher::mode(bool n_mode)
 
 float RRCModuleFlasher::flashingPeriod()
 {
-    return mflashingPeriod->values[0];
+    //qDebug() << "Flashing period oryginal value in ms " << QString::number(int(mflashingPeriod->values[0]));
+    //qDebug() << "new flashing Period = " << QString::number(1.0*mflashingPeriod->values[0]/1000.0);
+    return float(1.0*mflashingPeriod->values[0]/1000.0);
 }
 
 void RRCModuleFlasher::flashingPeriod(float n_value)
 {
-    if(mflashingPeriod->values[0] > float(int(n_value*10)/10.0)
-            || mflashingPeriod->values[0] < float(int(n_value*10)/10.0))
+    if(mflashingPeriod->values[0] != uint16_t(n_value*1000))
     {
-        mflashingPeriod->values[0] = float(int(n_value*10)/10.0);
+        mflashingPeriod->values[0] = uint16_t(n_value*1000);
         mflashingPeriod->myChanged(true);
     }
 

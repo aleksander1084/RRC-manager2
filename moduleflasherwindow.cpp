@@ -49,7 +49,7 @@ ModuleFlasherWindow::~ModuleFlasherWindow()
         delete inputs[i];
         inputs[i] = nullptr;
     }
-    qDebug() << "flasher window killed";
+    //qDebug() << "flasher window killed";
 }
 
 void ModuleFlasherWindow::SetInputModesDisabled(){
@@ -290,7 +290,17 @@ void ModuleFlasherWindow::updateModuleSettings()
     //buttonModes
     for(int i = 0; i < 6 ; ++i)
     {
-        mflasher->inputMode(i, inputs[i]->checkedId());
+        qDebug() << "MODE: " << mflasher->mode();
+        if(mflasher->mode())
+        {
+            mflasher->inputMode(i, inputs[i]->checkedId());
+        }
+        else
+        {
+            mflasher->inputMode(i, 0);
+        }
+        qDebug() << "flasher input mode: " << QString::number(mflasher->inputMode(i));
+
     }
 
     //flashing period
@@ -304,6 +314,8 @@ void ModuleFlasherWindow::updateModuleSettings()
 
     //advanced settings
     advancedSettings->updateAdvancedSettings();
+
+    mcommunication->updateDevice();
 }
 
 void ModuleFlasherWindow::serialPortConnectedInterfaceLockout(bool status)
@@ -390,7 +402,7 @@ void ModuleFlasherWindow::on_pushButtonConnect_clicked()
     {
         return;
     }
-
+    emit serial->serialIndexChanged(ui->comboBoxSerialPorts->currentIndex());
     serial->connectSerialPort();
 }
 
@@ -402,20 +414,20 @@ void ModuleFlasherWindow::on_pushButtonDisconnect_clicked()
 void ModuleFlasherWindow::on_pushButton_updateModule_clicked()
 {
     updateModuleSettings();
-    qDebug() << "MODE:" << mflasher->mode();
-    qDebug() << "Flashing period" <<QString::number(double(mflasher->flashingPeriod()), 'f', 1);
-    qDebug() << "timeout" << mflasher->timeout();
-    qDebug() << "master timeout" << mflasher->masterTimeout();
-    for(int i = 0; i <6; i++)
-    {
-        qDebug() << "input" << QString::number(i+1) << " mode: " << QString::number(mflasher->inputMode(i));
-    }
-    qDebug() << "LAST UPDATE: " << mflasher->lastUpdate();
-    for (int i = 0; i<6; ++i) {
-        qDebug() << "input" <<QString::number(i+1) << " activation state is " << mflasher->activeInputState(i);
-        qDebug() << "input" <<QString::number(i+1) << " activation delay: "<<mflasher->inputActivationDelay(i);
-        qDebug() << "input" <<QString::number(i+1) << " deactivation delay: "<<mflasher->inputDeactivationDelay(i);
-    }
+//    qDebug() << "MODE:" << mflasher->mode();
+//    qDebug() << "Flashing period" <<QString::number(double(mflasher->flashingPeriod()), 'f', 1);
+//    qDebug() << "timeout" << mflasher->timeout();
+//    qDebug() << "master timeout" << mflasher->masterTimeout();
+//    for(int i = 0; i <6; i++)
+//    {
+//        qDebug() << "input" << QString::number(i+1) << " mode: " << QString::number(mflasher->inputMode(i));
+//    }
+//    qDebug() << "LAST UPDATE: " << mflasher->lastUpdate();
+//    for (int i = 0; i<6; ++i) {
+//        qDebug() << "input" <<QString::number(i+1) << " activation state is " << mflasher->activeInputState(i);
+//        qDebug() << "input" <<QString::number(i+1) << " activation delay: "<<mflasher->inputActivationDelay(i);
+//        qDebug() << "input" <<QString::number(i+1) << " deactivation delay: "<<mflasher->inputDeactivationDelay(i);
+//    }
     dispalyModuleValues();
 }
 

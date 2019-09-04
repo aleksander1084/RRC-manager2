@@ -18,7 +18,7 @@ SerialMonitor::SerialMonitor(QWidget *parent) :
     listAvaliablePorts();
 
     QObject::connect(ui->pushButtonSettings, &QPushButton::clicked, serialSettings, &SerialSettingsDialog::show);
-    QObject::connect(serialSettings, &SerialSettingsDialog::serialIndexChanged, ui->comboBoxPorts, &QComboBox::setCurrentIndex);
+    QObject::connect(serialSettings->currentSettings, &mySerial::serialIndexChanged, ui->comboBoxPorts, &QComboBox::setCurrentIndex);
     serialPortConnectedInterfaceLockout(false);
     QObject::connect(serialSettings->currentSettings, &mySerial::serialConnectionStuatusSignal, this, &SerialMonitor::serialPortConnectedInterfaceLockout);
     QObject::connect(this->serialSettings->currentSettings, &mySerial::newMessageReceived,

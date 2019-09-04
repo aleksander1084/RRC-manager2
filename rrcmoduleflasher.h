@@ -36,7 +36,7 @@ public:
 
 protected:
     Parameter<bool, 1>      *mmode;
-    Parameter<float, 1>     *mflashingPeriod;
+    Parameter<uint16_t, 1>     *mflashingPeriod;
     Parameter<uint16_t, 1>  *mtimeout;
     Parameter<uint16_t, 1>  *mmasterTimeout;
     Parameter<uint8_t, 1>   *mactiveInputs;

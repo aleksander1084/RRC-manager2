@@ -122,7 +122,7 @@ void RRCModule::lastUpdate(int day, int month, int year)
 {
     if(uint8_t(day) != mlastUpdate->values[0]
             || uint8_t(month) != mlastUpdate->values[1]
-            || uint8_t(year) != mlastUpdate->values[2])
+            || uint8_t(year % 2000) != mlastUpdate->values[2])
     {
         mlastUpdate->values[0] = uint8_t(day);
         mlastUpdate->values[1] = uint8_t(month);

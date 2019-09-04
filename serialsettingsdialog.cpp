@@ -62,7 +62,7 @@ void SerialSettingsDialog::showPortInfo(int idx)
 void SerialSettingsDialog::apply()
 {
     updateSettings();
-    emit serialIndexChanged(ui->serialPortInfoListBox_2->currentIndex());
+    emit currentSettings->serialIndexChanged(ui->serialPortInfoListBox_2->currentIndex());
     emit currentSettings->settingsChangedSignal();
     qDebug() << "Serial setting name: " << currentSettings->name;
     hide();

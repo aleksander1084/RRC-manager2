@@ -118,6 +118,8 @@ signals:
     //TODO: Doxygen
     void searchSignal();
 
+    void serialIndexChanged(int index);
+
     /**
      * @brief settingsChangedSignal function called when Serial Port Settings are changed and there
      * is a need to send signal about this event

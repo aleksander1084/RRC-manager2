@@ -28,7 +28,7 @@ public:
     void externalSerialIndexChange(int idx);
 
 signals:
-     void serialIndexChanged(int idx);
+     //void serialIndexChanged(int idx);
 
 private slots:
     void showPortInfo(int idx);

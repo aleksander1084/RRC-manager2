@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <sstream>
 #include <iomanip>
+#include <QEventLoop>
+#include <QTimer>
 
 RRCCommunication::RRCCommunication(mySerial *n_serialPort, RRCModule *n_module) : serialPort(n_serialPort), mmodule(n_module)
 {
@@ -11,29 +13,28 @@ RRCCommunication::RRCCommunication(mySerial *n_serialPort, RRCModule *n_module) 
     qDebug() << "nazwa portu " << serialPort->name;*/
     isDeclared = true;
 
-    QStringList unsignedInteagers = {QString::number(1),
-                                     QString::number(2),
-                                     QString::number(3),
-                                     QString::number(4),
-                                     QString::number(5),
-                                     QString::number(6),
-                                     QString::number(7),
-                                     QString::number(10),
-                                     QString::number(15),
-                                     QString::number(20),
-                                     QString::number(255),
-                                     QString::number(1024)};
-    qDebug() << "Inteagers:";
-    codeUint(unsignedInteagers);
+//    QStringList unsignedInteagers = {QString::number(1),
+//                                     QString::number(2),
+//                                     QString::number(3),
+//                                     QString::number(4),
+//                                     QString::number(5),
+//                                     QString::number(6),
+//                                     QString::number(7),
+//                                     QString::number(10),
+//                                     QString::number(15),
+//                                     QString::number(20),
+//                                     QString::number(255),
+//                                     QString::number(1024)};
+//    qDebug() << "Inteagers:";
+//    codeUint(unsignedInteagers);
 
-    QStringList bools = {QString::number(int(true)), QString::number(int(false)), QString::number(int(true)), QString::number(int(false))};
-    qDebug() << "Bools:";
-    codeBool(bools);
+//    QStringList bools = {QString::number(int(true)), QString::number(int(false)), QString::number(int(true)), QString::number(int(false))};
+//    qDebug() << "Bools:";
+//    codeBool(bools);
 
-    QStringList floats = {QString::number(double(1.2)), QString::number(double(1.4)), QString::number(double(1.2)), QString::number(double(1.4))};
-    qDebug() <<"Floats:";
-    codeFloat(floats);
-
+//    QStringList floats = {QString::number(double(1.2)), QString::number(double(1.4)), QString::number(double(1.2)), QString::number(double(1.4))};
+//    qDebug() <<"Floats:";
+//    codeFloat(floats);
 
 }
 
@@ -44,7 +45,7 @@ RRCCommunication::RRCCommunication(mySerial *n_serialPort) : RRCCommunication(n_
 
 RRCCommunication::~RRCCommunication()
 {
-    qDebug() << "niszczę RRCCommunication";
+    //qDebug() << "niszczę RRCCommunication";
     isDeclared = false;
     //QObject::disconnect(this, &RRCCommunication::receivedNewParametr, mmodule, &RRCModule::receiveParameterFromSerial);
 }
@@ -62,6 +63,7 @@ void RRCCommunication::updateDevice()
     for (unsigned long long i = 0; i < parametersToUpdate.size(); ++i)
     {
         QStringList sections = parametersToUpdate.at(i)->readParameter();
+        qDebug() << sections;
 
         switch(sections.at(1).toInt())
         {
@@ -77,6 +79,9 @@ void RRCCommunication::updateDevice()
         }
 
         sendParameterToDevice(sections);
+        QEventLoop loop;
+        QTimer::singleShot(100, &loop, SLOT(quit()) );
+        loop.exec();
     }
 
     readDevice();
@@ -92,10 +97,10 @@ QStringList RRCCommunication::decodeuint(QStringList sections)
     QStringList response = sections;
     for(int i = 2; i < sections.size(); ++i)
     {
-        int temp;
+        unsigned int temp;
         std::istringstream(sections.at(i).toStdString()) >> std::hex >> temp;
-        //qDebug() << QString::number(uint8_t(temp));
-        response.replace(i, QString::number(uint8_t(temp)));
+        //qDebug() << QString::number(temp);
+        response.replace(i, QString::number(uint16_t(temp)));
         //qDebug() << "test crazy thing" << QString::number(temp);
     }
 
@@ -128,9 +133,9 @@ QStringList RRCCommunication::codeBool(QStringList sections)
     for(int i = 2; i < sections.size(); ++i)
     {
         std::stringstream ss;
-        ss << std::setw(2) << std::setfill('0') << sections.at(i).toInt();
+        ss << std::setw(2) << std::setfill('0') << int(sections.at(i).toFloat());
         response.push_back(QString::fromStdString(ss.str()));
-        qDebug() << "hex value of " << sections.at(i) << " is " << QString::fromStdString(ss.str());
+        //qDebug() << "hex value of " << int(sections.at(i).toFloat()) << " is " << QString::fromStdString(ss.str());
     }
     return response;
 }
@@ -143,9 +148,9 @@ QStringList RRCCommunication::codeUint(QStringList sections)
     for(int i = 2; i < sections.size(); ++i)
     {
         std::stringstream ss;
-        ss << std::setw(4) << std::setfill('0') << std::hex << sections.at(i).toInt();
+        ss << std::setw(4) << std::setfill('0') << std::hex << int(sections.at(i).toFloat());
         response.push_back(QString::fromStdString(ss.str()));
-        qDebug() << "hex unsigned value of " << sections.at(i) << " is " << QString::fromStdString(ss.str());
+        //qDebug() << "hex unsigned value of " << QString::number(int(sections.at(i).toFloat())) << " is " << QString::fromStdString(ss.str());
     }
     return response;
 }
@@ -155,14 +160,6 @@ QStringList RRCCommunication::codeFloat(QStringList sections)
     QStringList response;
     response.push_back(sections.at(0));
     response.push_back(sections.at(1));
-//    for(int i = 2; i < sections.size(); ++i)
-//    {
-//        std::stringstream ss;
-//        ss << std::fixed << std::hexfloat << sections.at(i).toFloat();
-//        response.push_back(QString::fromStdString(ss.str()));
-//        qDebug() << "hex float value of " << sections.at(i) << " is " << QString::fromStdString(ss.str());
-//    }
-
     for(int i = 2; i < sections.size(); ++i)
         {
         unionForHexFloatConversion temp;
@@ -170,7 +167,7 @@ QStringList RRCCommunication::codeFloat(QStringList sections)
         std::stringstream ss;
         ss << std::hex << temp.ul;
         response.push_back(QString::fromStdString(ss.str()));
-        qDebug() << "hex float value of " << sections.at(i) << " is " << QString::fromStdString(ss.str());
+        //qDebug() << "hex float value of " << QString::number(sections.at(i).toFloat()) << " is " << QString::fromStdString(ss.str());
         }
 
     return response;
@@ -179,23 +176,28 @@ QStringList RRCCommunication::codeFloat(QStringList sections)
 void RRCCommunication::sendParameterToDevice(QStringList sections)
 {
     QString message = "<!|";
-    for (int i = 0; i < sections.size(); ++i)
+    for (int i = 0; i < sections.size()-1; ++i)
     {
         message += sections.at(i);
         message += "|";
     }
     message += sections.at(sections.size()-1);
     message += ">";
-    qDebug() << message;
+    //qDebug() << message;
     serialPort->sendMessageToSerialPort(message);
 }
 
 void RRCCommunication::processNewMessage(QString message)
 {
-    //qDebug() << "new message received: " << message;
+
+    //qDebug() << "new message to process: " << message;
     //test is message correct
     QStringRef plainMessage;
     bool test = false;
+    if(message.contains("<"))
+    {
+        message = message.right(message.length() - message.indexOf("<"));
+    }
     if(message[0] == QChar('<')&& message[message.length()-1] == QChar('>'))
     {
         //qDebug() << "option 1";
@@ -208,14 +210,15 @@ void RRCCommunication::processNewMessage(QString message)
         plainMessage = message.leftRef(message.length() - 2);
         test = true;
     }
-
+    //qDebug() << "make it here";
     if(test)
     {
+
         //qDebug() << "pre plain message: " << plainMessage;
 
         plainMessage = plainMessage.right(plainMessage.length()-1);
 
-        qDebug() << "Plain message: " <<plainMessage;
+        //qDebug() << "Plain message: " <<plainMessage;
 
         //cutting into sections
         message = plainMessage.toString();
@@ -230,12 +233,14 @@ void RRCCommunication::processNewMessage(QString message)
         case 0 : sections = decodeBool(sections);
             break;
         case 1 : sections = decodeuint(sections);
+            //qDebug() << sections;
             break;
         case 2 : sections = decodeFloat(sections);
         }
 
         emit receivedNewParametr(sections);
     }
+    //qDebug()<< "make end";
 
 }
 

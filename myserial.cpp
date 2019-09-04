@@ -126,27 +126,34 @@ bool mySerial::isOpen()
 
 void mySerial::readFromSerialPort()
 {
-    QString line;
-    //qDebug() << "ENTERED";
+    if(this->serialPort->canReadLine())
+    {
+        QString line;
+        //qDebug() << "ENTERED";
 
-        const QByteArray data = this->serialPort->readAll();
+            const QByteArray data = this->serialPort->readAll();
 
-        line = QString::fromStdString(data.toStdString());
+            line = QString::fromStdString(data.toStdString());
 
-        if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
-            line = line.left(line.size()-1);
-        if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
-            line = line.left(line.size()-1);
+            if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
+                line = line.left(line.size()-1);
+            if(line.at(line.size()-1) == '\n' || line.at(line.size()-1) == '\r')
+                line = line.left(line.size()-1);
 
-        //qDebug() << "emituje sygnal";
-        emit newMessageReceived(line);
+            //qDebug() << "emituje sygnal";
+            //qDebug() << "received message: " << line;
+            emit newMessageReceived(line);
+    }
 }
 
 void mySerial::sendMessageToSerialPort(QString message)
 {
+    //qDebug() <<"send message start";
     if(serialPort->isOpen() && serialPort->isWritable())
     {
+        //qDebug() <<"send message after test";
         serialPort->write((message + "\n").toStdString().c_str());
+        //qDebug() <<"send message send";
         emit newMessageSent(message);
     }
 }
@@ -155,5 +162,5 @@ void mySerial::setName(QString n_name)
 {
     name = n_name;
     emit nameChangedSignal();
-    qDebug() << "name changedSignal emited " << name;
+    //qDebug() << "name changedSignal emited " << name;
 }
