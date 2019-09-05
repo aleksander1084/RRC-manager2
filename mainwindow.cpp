@@ -31,6 +31,11 @@ MainWindow::~MainWindow()
     mselectDock = nullptr;
     delete viewMenu;
     viewMenu = nullptr;
+    if(serial != nullptr)
+        if(serial->isOpen())
+        {
+            serial->disconnectSerialPort();
+        }
     delete serial;
     serial = nullptr;
     if(communication->isDeclared){

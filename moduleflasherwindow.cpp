@@ -2,6 +2,7 @@
 #include "ui_moduleflasherwindow2.h"
 #include "QDebug"
 #include <math.h>
+#include <QTimer>
 
 
 ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n_communication, QWidget *parent) :
@@ -17,6 +18,10 @@ ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n
         mcommunication = nullptr;
     }
     mcommunication = new RRCCommunication(serial, mflasher);
+    mcommunication->readDevice();
+    QEventLoop loop;
+    QTimer::singleShot(3000, &loop, &QEventLoop::quit);
+    loop.exec();
     ui->setupUi(this);
     SetInputModesDisabled();
     SetInputModesEnabled();
@@ -33,7 +38,7 @@ ModuleFlasherWindow::ModuleFlasherWindow(mySerial *n_serial, RRCCommunication *n
     dispalyModuleValues();
     QObject::connect(mflasher, &RRCModule::parameterChanged, this, &ModuleFlasherWindow::dispalyModuleValues);
 
-    mcommunication->readDevice();
+
 }
 
 ModuleFlasherWindow::~ModuleFlasherWindow()
@@ -169,6 +174,7 @@ void ModuleFlasherWindow::dispalyModuleValues()
         ui->label_authenticity->setStyleSheet("QLabel { color : black; }");
     }
     setLabel("", mflasher->authenticity(), ui->label_authenticity);
+    ui->label_authenticity->hide();
 
     ui->label_settingMatch->hide(); //TODO: check with database
 
