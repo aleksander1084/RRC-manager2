@@ -49,19 +49,12 @@ public:
      * @param parent pointer to the object that called new part of the interface
      */
     explicit SerialMonitor(QWidget *parent = nullptr);
-
-
-
-
-
-
     /**
      * @brief externalSerialIndexChanger method called when index of the serial port in a combo box will be changed
      * in another window of UI to keep displayed data synchronized
      * @param index index of the currently set serial port in a combo box
      */
     void externalSerialIndexChanger(int index);
-    //QSerialPort *serialPort;
 
     ~SerialMonitor();
 
