@@ -90,8 +90,12 @@ public:
      * @param message contains message that has to be send
      */
     void sendMessageToSerialPort(QString message);
-    //TODO: doxygen
+    /**
+     * @brief setName methoda called to change name of the selected sertial port to the new serial port
+     * @param n_name new active serial port name
+     */
     void setName(QString n_name);
+
     /**
      * @brief operator = assigment operator for mySerial that is inhariting after QObject that
      * doesn't include assigment in this case overload has to copy member values into another variable
@@ -106,18 +110,29 @@ public:
     QSerialPort::Parity parity; /**< contains type of the parity for the serial port */
     QSerialPort::StopBits stopBits; /**< contains number of stoop bits for the serial port communication */
     QSerialPort::FlowControl flowControl; /**< contains type of the flow control for the communication */
-    //bool localEchoEnabled; //TODO remove local echo here and in settings window
 
 
 
 signals:
-    //TODO: Doxygen
+    /**
+     * @brief serialConnectionStuatusSignal signal emitted when status of the serial port connection changes
+     * @param status of the serial port connection after change
+     */
     void serialConnectionStuatusSignal(bool status);
-    //TODO: Doxygen
-    void nameChangedSignal();
-    //TODO: Doxygen
-    void searchSignal();
 
+    /**
+     * @brief nameChangedSignal signal called when name of the active serial port has been changed
+     */
+    void nameChangedSignal();
+
+    /**
+     * @brief searchSignal signal emited to force all combo boxxes with serial ports to update list of avaliable serial ports
+     */
+    void searchSignal();
+    /**
+     * @brief serialIndexChanged signal mited when selected serial port is changed to update displayed information in all combo boxes with serial port
+     * @param index new index of the serial port that is actually selected on the list in combo box
+     */
     void serialIndexChanged(int index);
 
     /**

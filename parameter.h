@@ -7,13 +7,28 @@
 #include <QDebug>
 #include <typeinfo>
 
-template<typename valType = int, int numOfVal = 1>class Parameter : public ParameterList
+template<typename valType = int, int numOfVal = 1>
+/**
+ * @brief The Parameter class represent single parameter of the module, depending on a template can hold different type and amount of values
+ */
+class Parameter : public ParameterList
 {
 public:
+    /**
+     * @brief Parameter default constructor used to define pointers of this type
+     */
     Parameter()
     {
 
     }
+
+    /**
+     * @brief Parameter constructor used to define new parameters under pointers
+     * @param n_name name of the new parameter
+     * @param n_symbol symbol for the new parameter
+     * @param n_values vector of values fo the new parameters
+     * @param n_defaultValues vector of default values of parameter
+     */
     Parameter(QString n_name, QString n_symbol, std::vector<valType> n_values, std::vector<valType> n_defaultValues)
     {
         name = n_name;
@@ -33,6 +48,10 @@ public:
         }
 
     }
+
+    /**
+     * @brief Parameter oveloaded constructor when there is no need do define default values
+     */
     Parameter(QString n_name, QString n_symbol, std::vector<valType> n_values)
     {
         name = n_name;
@@ -52,6 +71,10 @@ public:
 
     }
 
+    /**
+     * @brief readParameter implementation of the virtual method responsible for reading a parameter via based class pointer
+     * @return
+     */
     virtual QStringList readParameter()
     {
         QStringList respond;
@@ -62,8 +85,10 @@ public:
         return respond;
     }
 
-    //void setParameter();
-
+    /**
+     * @brief setParameter implementation of the virtual method responsible for setting value of the parameter via based class pointer
+     * @param parameterSections
+     */
     virtual void setParameter(QStringList parameterSections)
     {
         myChanged(false);
@@ -75,20 +100,9 @@ public:
         //qDebug() << test;
     }
 
-//    void setParameter(QString n_name, QString n_symbol, valType n_values[], int valSize)
-//    {
-//        name = n_name;
-//        symbol = n_symbol;
-//        for(int i = 0; i < valSize; i++)
-//        {
-//            values[i] = n_values[i];
-//        }
-//        for(int i = valSize; i < numOfVal; i++)
-//        {
-//            values[i] = defaultValues[i];
-//        }
-//    }
-
+    /**
+     * @brief operator == overload of operator
+     */
     bool operator==( const Parameter &q )
     {
         if((sizeof(values)/sizeof(*values)))
@@ -105,32 +119,46 @@ public:
 
     }
 
-    std::vector<valType> values;
-    std::vector<valType> defaultValues;
-//    valType values[numOfVal];
-//    valType defaultValues[numOfVal];
-private:
+    std::vector<valType> values; /**<vector of values*/
+    std::vector<valType> defaultValues; /**<vector of default values*/
 
+private:
+    /**
+     * @brief isBool test is this specific parameter containg bool type values
+     */
     bool isBool()
     {
         return std::is_same<valType, bool>::value;
     }
 
+    /**
+     * @brief isUint8_t test is this specific parameter containing uint8_t type values
+     */
     bool isUint8_t()
     {
        return std::is_same<valType, uint8_t>::value;
     }
 
+    /**
+     * @brief isUint16_t test is this specific parameter containing uint16_t type values
+     */
     bool isUint16_t()
     {
         return std::is_same<valType, uint16_t>::value;
     }
 
+    /**
+     * @brief isFloat test is this specific parameter containing float type values
+     */
     bool isFloat()
     {
         return std::is_same<valType, float>::value;
     }
 
+    /**
+     * @brief valueType test defining type of a holded value
+     * @return 0 for bool, 1 for uint8_t and uint16_t, 2 for float (dropped extra value for uint16_t because later it uses the same coding, decoding and transmitions methods
+     */
     int valueType()
     {
         if(isBool())
@@ -145,6 +173,10 @@ private:
             return -1;//TODO: error handler
     }
 
+    /**
+     * @brief valueToQStringList method converting vector of values into QStringList
+     * @return
+     */
     QStringList valueToQStringList()
     {
         QStringList response;
@@ -158,11 +190,5 @@ private:
     }
 
 };
-
-
-
-
-
-
 
 #endif // PARAMETER_H

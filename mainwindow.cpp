@@ -108,11 +108,6 @@ void MainWindow::setDocks()
     //qDebug() << "features " << dock3->features();
 }
 
-void MainWindow::returnSerialName()
-{
-    //qDebug() << serial->name;
-}
-
 #ifndef QT_NO_MENU
 /*!
     Returns a popup menu containing checkable entries for the toolbars and
