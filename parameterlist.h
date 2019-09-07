@@ -39,6 +39,12 @@ public:
      */
     QString mySymbol();
 
+    /**
+     * @brief myName returns name of the parameter
+     * @return
+     */
+    QString myName();
+
 
 
 
